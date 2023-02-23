@@ -7,16 +7,18 @@ import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 
 const Signup = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [cpfCnpj, setCpfCnpj] = useState("");
   const [emailConf, setEmailConf] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const { signup } = useAuth();
 
   const handleSignup = () => {
-    if (!email | !emailConf | !senha) {
+    if (!name | !email | !emailConf | !password) {
       setError("Preencha todos os campos");
       return;
     } else if (email !== emailConf) {
@@ -24,7 +26,9 @@ const Signup = () => {
       return;
     }
 
-    const res = signup(email, senha);
+    const res = signup(name, cpfCnpj, email, password);
+
+    debugger;
 
     if (res) {
       setError(res);
@@ -40,6 +44,18 @@ const Signup = () => {
       <C.Label>MYSTREET</C.Label>
       <C.Content>
         <Input
+          type="text"
+          placeholder="Digite seu Nome"
+          value={name}
+          onChange={(e) => [setName(e.target.value), setError("")]}
+        />
+        <Input
+          type="text"
+          placeholder="Digite seu Cpf/Cnpj"
+          value={cpfCnpj}
+          onChange={(e) => [setCpfCnpj(e.target.value), setError("")]}
+        />
+        <Input
           type="email"
           placeholder="Digite seu E-mail"
           value={email}
@@ -54,8 +70,8 @@ const Signup = () => {
         <Input
           type="password"
           placeholder="Digite sua Senha"
-          value={senha}
-          onChange={(e) => [setSenha(e.target.value), setError("")]}
+          value={password}
+          onChange={(e) => [setPassword(e.target.value), setError("")]}
         />
         <C.labelError>{error}</C.labelError>
         <Button Text="Inscrever-se" onClick={handleSignup} />

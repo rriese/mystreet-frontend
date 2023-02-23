@@ -1,4 +1,6 @@
 import { createContext, useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext({});
 
@@ -37,27 +39,59 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const signup = (email, password) => {
-        const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+    const signup = async (name, cpfCnpj, email, password) => {
+        await axios
+        .post("http://localhost:8080/api/user/", {
+          name: name,
+          email: email,
+          cpfCnpj: cpfCnpj,
+          password: password
+        })
+        .then(({ data }) => toast.success(data))
+        .catch(({ data }) => toast.error(data));
 
-        const hasUser = usersStorage?.filter((user) => user.email === email);
+        // const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
 
-        if (hasUser?.length) {
-            return "Já tem uma conta com esse E-mail";
-        }
+        // const hasUser = usersStorage?.filter((user) => user.email === email);
 
-        let newUser;
+        // if (hasUser?.length) {
+        //     return "Já tem uma conta com esse E-mail";
+        // }
 
-        if (usersStorage) {
-            newUser = [...usersStorage, { email, password }];
-        } else {
-            newUser = [{ email, password }];
-        }
+        // let newUser;
 
-        localStorage.setItem("users_bd", JSON.stringify(newUser));
+        // if (usersStorage) {
+        //     newUser = [...usersStorage, { email, password }];
+        // } else {
+        //     newUser = [{ email, password }];
+        // }
+
+        // localStorage.setItem("users_bd", JSON.stringify(newUser));
 
         return;
     };
+
+    // const signup = (email, password) => {
+    //     const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+
+    //     const hasUser = usersStorage?.filter((user) => user.email === email);
+
+    //     if (hasUser?.length) {
+    //         return "Já tem uma conta com esse E-mail";
+    //     }
+
+    //     let newUser;
+
+    //     if (usersStorage) {
+    //         newUser = [...usersStorage, { email, password }];
+    //     } else {
+    //         newUser = [{ email, password }];
+    //     }
+
+    //     localStorage.setItem("users_bd", JSON.stringify(newUser));
+
+    //     return;
+    // };
 
     const signout = () => {
         setUser(null);
