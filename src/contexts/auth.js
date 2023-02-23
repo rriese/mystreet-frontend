@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 export const AuthContext = createContext({});
 
@@ -8,94 +7,75 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
 
     useEffect(() => {
-        const userToken = localStorage.getItem("user_token");
-        const usersStorage = localStorage.getItem("users_bd");
+        const userToken = sessionStorage.getItem("user_token");
 
-        if (userToken && usersStorage) {
-            const hasUser = JSON.parse(usersStorage)?.filter(
-                (user) => user.email === JSON.parse(userToken).email
-            );
-
-            if (hasUser) setUser(hasUser[0]);
+        if (userToken) {
+            setUser(JSON.parse(userToken));
         }
     }, []);
 
-    const signin = (email, password) => {
-        const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+    const signin = async (email, password) => {
+        let response;
+        let token;
+        let role;
 
-        const hasUser = usersStorage?.filter((user) => user.email === email);
+        //Login
+        await axios
+            .post("http://localhost:8080/login", {
+                email: email,
+                password: password
+            })
+            .then(data => {
+                token = data.data;
+            })
+            .catch(err => {
+                response = 'Login ou senha incorretos';
+            });
 
-        if (hasUser?.length) {
-            if (hasUser[0].email === email && hasUser[0].password === password) {
-                const token = Math.random().toString(36).substring(2);
-                localStorage.setItem("user_token", JSON.stringify({ email, token }));
-                setUser({ email, password });
-                return;
-            } else {
-                return "E-mail ou senha incorretos";
-            }
-        } else {
-            return "Usuário não cadastrado";
+        //Role
+        if (!response) {
+            await axios
+                .get("http://localhost:8080/api/utils/userrole", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(data => {
+                    role = data.data
+                })
+                .catch(err => {
+                    response = 'Erro buscando role';
+                });
         }
+
+        if (token && role) {
+            sessionStorage.setItem("user_token", JSON.stringify({ email, role, token }));
+            setUser({ email, role, token });
+        }
+
+        return response;
     };
 
     const signup = async (name, cpfCnpj, email, password) => {
+        let response;
+
         await axios
-        .post("http://localhost:8080/api/user/", {
-          name: name,
-          email: email,
-          cpfCnpj: cpfCnpj,
-          password: password
-        })
-        .then(({ data }) => toast.success(data))
-        .catch(({ data }) => toast.error(data));
+            .post("http://localhost:8080/api/user/", {
+                name: name,
+                email: email,
+                cpfCnpj: cpfCnpj,
+                password: password
+            })
+            .catch(err => {
+                response = err.response.data.message;
+            });
 
-        // const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
-
-        // const hasUser = usersStorage?.filter((user) => user.email === email);
-
-        // if (hasUser?.length) {
-        //     return "Já tem uma conta com esse E-mail";
-        // }
-
-        // let newUser;
-
-        // if (usersStorage) {
-        //     newUser = [...usersStorage, { email, password }];
-        // } else {
-        //     newUser = [{ email, password }];
-        // }
-
-        // localStorage.setItem("users_bd", JSON.stringify(newUser));
-
-        return;
+        return response;
     };
-
-    // const signup = (email, password) => {
-    //     const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
-
-    //     const hasUser = usersStorage?.filter((user) => user.email === email);
-
-    //     if (hasUser?.length) {
-    //         return "Já tem uma conta com esse E-mail";
-    //     }
-
-    //     let newUser;
-
-    //     if (usersStorage) {
-    //         newUser = [...usersStorage, { email, password }];
-    //     } else {
-    //         newUser = [{ email, password }];
-    //     }
-
-    //     localStorage.setItem("users_bd", JSON.stringify(newUser));
-
-    //     return;
-    // };
 
     const signout = () => {
         setUser(null);
-        localStorage.removeItem("user_token");
+        sessionStorage.removeItem("user_token");
     };
 
     return (

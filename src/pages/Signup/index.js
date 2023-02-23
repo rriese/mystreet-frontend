@@ -17,7 +17,7 @@ const Signup = () => {
 
   const { signup } = useAuth();
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!name | !email | !emailConf | !password) {
       setError("Preencha todos os campos");
       return;
@@ -26,7 +26,7 @@ const Signup = () => {
       return;
     }
 
-    const res = signup(name, cpfCnpj, email, password);
+    const res = await signup(name, cpfCnpj, email, password);
 
     debugger;
 
