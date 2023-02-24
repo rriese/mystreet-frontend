@@ -10,15 +10,23 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
   };
 
   const handleDelete = async (id) => {
+    const userToken = JSON.parse(sessionStorage.getItem("user_token"));
+
     await axios
-      .delete("http://localhost:8800/" + id)
+      .delete("http://localhost:8080/api/user/" + id, {
+        headers: {
+          'Authorization': `Bearer ${userToken.token}`
+        }
+      })
       .then(({ data }) => {
         const newArray = users.filter((user) => user.id !== id);
 
         setUsers(newArray);
-        toast.success(data);
+        toast.success("Usuário deletado com sucesso!");
       })
-      .catch(({ data }) => toast.error(data));
+      .catch(err => {
+        toast.error('Erro ao deletar usuário');
+      });
 
     setOnEdit(null);
   };
@@ -29,7 +37,7 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
         <C.Tr>
           <C.Th>Nome</C.Th>
           <C.Th>Email</C.Th>
-          <C.Th onlyWeb>Fone</C.Th>
+          <C.Th onlyWeb>Cpf/Cnpj</C.Th>
           <C.Th></C.Th>
           <C.Th></C.Th>
         </C.Tr>
@@ -37,10 +45,10 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
       <C.Tbody>
         {users.map((item, i) => (
           <C.Tr key={i}>
-            <C.Td width="30%">{item.nome}</C.Td>
-            <C.Td width="30%">{item.email}</C.Td>
+            <C.Td width="30%">{item.name}</C.Td>
+            <C.Td width="40%">{item.email}</C.Td>
             <C.Td width="20%" onlyWeb>
-              {item.fone}
+              {item.cpfCnpj}
             </C.Td>
             <C.Td alignCenter width="5%">
               <FaEdit onClick={() => handleEdit(item)} />
