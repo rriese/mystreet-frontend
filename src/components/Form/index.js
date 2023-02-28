@@ -1,9 +1,9 @@
 
-import axios from "axios";
 import React, { useEffect, useRef } from "react";
 import * as C from "./styles";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ServiceBase from "../../services/serviceBase";
 
 const Form = ({ getUsers, onEdit, setOnEdit }) => {
   const ref = useRef();
@@ -20,7 +20,6 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userToken = JSON.parse(sessionStorage.getItem("user_token"));
     const user = ref.current;
 
     if (
@@ -32,29 +31,29 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
     }
 
     if (onEdit) {
-      await axios
-        .put("http://localhost:8080/api/user/", {
-          id: onEdit.id,
-          name: user.nome.value,
-          email: user.email.value,
-          cpfCnpj: user.cpfCnpj.value
-        }, {
-          headers: {
-            'Authorization': `Bearer ${userToken.token}`
-          }
-        })
-        .then(({ data }) => toast.success(data))
-        .catch(err => {
-          toast.error(err.response.data.message);
-        });
+      let serviceResponse = await ServiceBase.putRequest('api/user/', {
+        id: onEdit.id,
+        name: user.nome.value,
+        email: user.email.value,
+        cpfCnpj: user.cpfCnpj.value
+      });
+
+      if (serviceResponse && serviceResponse.responseType === 'OK') {
+        toast.success('Usuário atualizado com sucesso!');
+      } else {
+        toast.error(serviceResponse.content);
+      }
     } else {
-      await axios
-        .post("http://localhost:8080", {
-          nome: user.nome.value,
-          email: user.email.value,
-        })
-        .then(({ data }) => toast.success(data))
-        .catch(({ data }) => toast.error(data));
+      let serviceResponse = await ServiceBase.postRequest('api/user/', {
+        nome: user.nome.value,
+        email: user.email.value
+      });
+
+      if (serviceResponse && serviceResponse.responseType === 'OK') {
+        toast.success('Usuário criado com sucesso!');
+      } else {
+        toast.error(serviceResponse.content);
+      }
     }
 
     user.nome.value = "";

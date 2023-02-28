@@ -1,8 +1,8 @@
 import React from "react";
-import axios from "axios";
 import * as C from "./styles";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
+import ServiceBase from "../../services/serviceBase";
 
 const Grid = ({ users, setUsers, setOnEdit }) => {
   const handleEdit = (item) => {
@@ -10,24 +10,15 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
   };
 
   const handleDelete = async (id) => {
-    const userToken = JSON.parse(sessionStorage.getItem("user_token"));
+    const serviceResponse = await ServiceBase.deleteRequest(`api/user/${id}`);
 
-    await axios
-      .delete("http://localhost:8080/api/user/" + id, {
-        headers: {
-          'Authorization': `Bearer ${userToken.token}`
-        }
-      })
-      .then(({ data }) => {
-        const newArray = users.filter((user) => user.id !== id);
-
-        setUsers(newArray);
-        toast.success("Usuário deletado com sucesso!");
-      })
-      .catch(err => {
-        toast.error('Erro ao deletar usuário');
-      });
-
+    if (serviceResponse && serviceResponse.responseType === 'OK') {
+      const newArray = users.filter((user) => user.id !== id);
+      setUsers(newArray);
+      toast.success("Usuário deletado com sucesso!");
+    } else {
+      toast.error('Erro ao deletar usuário');
+    }
     setOnEdit(null);
   };
 

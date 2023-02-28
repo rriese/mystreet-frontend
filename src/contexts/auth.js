@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import ServiceBase from "../services/serviceBase";
 
 export const AuthContext = createContext({});
 
@@ -16,60 +16,33 @@ export const AuthProvider = ({ children }) => {
 
     const signin = async (email, password) => {
         let response;
-        let token;
-        let role;
+        let serviceResponse = await ServiceBase.postRequest('login', {
+            email: email,
+            password: password
+        });
 
-        //Login
-        await axios
-            .post("http://localhost:8080/login", {
-                email: email,
-                password: password
-            })
-            .then(data => {
-                token = data.data;
-            })
-            .catch(err => {
-                response = 'Login ou senha incorretos';
-            });
-
-        //Role
-        if (!response) {
-            await axios
-                .get("http://localhost:8080/api/utils/userrole", {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                .then(data => {
-                    role = data.data
-                })
-                .catch(err => {
-                    response = 'Erro buscando role';
-                });
+        if (serviceResponse && serviceResponse.responseType === 'OK') {
+            let token = serviceResponse.content;
+            sessionStorage.setItem("user_token", JSON.stringify({ email, token }));
+            setUser({ email, token });
+        } else {
+            response = 'Login ou senha incorretos';
         }
-
-        if (token && role) {
-            sessionStorage.setItem("user_token", JSON.stringify({ email, role, token }));
-            setUser({ email, role, token });
-        }
-
         return response;
     };
 
     const signup = async (name, cpfCnpj, email, password) => {
         let response;
+        let serviceResponse = await ServiceBase.postRequest('api/user/', {
+            name: name,
+            email: email,
+            cpfCnpj: cpfCnpj,
+            password: password
+        });
 
-        await axios
-            .post("http://localhost:8080/api/user/", {
-                name: name,
-                email: email,
-                cpfCnpj: cpfCnpj,
-                password: password
-            })
-            .catch(err => {
-                response = err.response.data.message;
-            });
-
+        if (serviceResponse && serviceResponse.responseType === 'ERROR') {
+            response = serviceResponse.content;
+        }
         return response;
     };
 
