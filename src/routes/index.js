@@ -23,12 +23,12 @@ const RoutesApp = () => {
     <BrowserRouter>
       <Fragment>
         <Routes>
-          <Route exact path="/home" element={<Private Item={Home} />} />
+          {/* <Route exact path="/home" element={<Private Item={Home} />} /> */}
           <Route exact path="/user" element={<Private Item={User} />} />
           <Route path="/" element={<Authenticated Item={Signin} />} />
           <Route exact path="/signup" element={<Signup />} />
-          {/* <Route exact path="/home2" element={<Private Item={Test} Content={Test2} />} /> */}
-          <Route path="/home2" element={<Test content={<Test2 />} />} />
+          <Route exact path="/home" element={<Private Item={Test} Content={Test2} />} />
+          {/* <Route path="/home2" element={<Test content={<Test2 />} />} /> */}
           <Route path="*" element={<Signin />} />
         </Routes>
       </Fragment>

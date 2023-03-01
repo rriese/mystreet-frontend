@@ -1,33 +1,14 @@
 import React from 'react';
 import { UserOutlined, DatabaseOutlined, LogoutOutlined } from '@ant-design/icons';
-import { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { useNavigate } from "react-router-dom";
+import useAuth from '../../hooks/useAuth';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const items2: MenuProps['items'] = [
-    {
-      key: 'profile-nav',
-      label: 'Perfil',
-      icon: <UserOutlined />,
-
-      children: [{
-        key: 'profile',
-        label: 'Meu perfil',
-        icon: <DatabaseOutlined />
-      }, {
-        key: 'my_claims',
-        label: 'Minhas reclamações',
-        icon: <DatabaseOutlined />
-      }, {
-        key: 'logout',
-        label: 'Sair',
-        icon: <LogoutOutlined />
-      }]
-    }
-]
-
-const Test = React.FC = ({content}) => {
+const Test = ({ content }) => {
+  const navigate = useNavigate();
+  const { signout } = useAuth();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -51,7 +32,31 @@ const Test = React.FC = ({content}) => {
               defaultSelectedKeys={['profile-nav']}
               defaultOpenKeys={['profile-nav']}
               style={{ height: '100%' }}
-              items={items2}
+              items={[
+                {
+                  key: 'profile-nav',
+                  label: 'Perfil',
+                  icon: <UserOutlined />,
+
+                  children: [{
+                    key: 'profile',
+                    label: 'Meu perfil',
+                    icon: <DatabaseOutlined />
+                  }, {
+                    key: 'my_claims',
+                    label: 'Minhas reclamações',
+                    icon: <DatabaseOutlined />
+                  }, {
+                    key: 'logout',
+                    label: 'Sair',
+                    icon: <LogoutOutlined />,
+                    onClick: () => {
+                      signout();
+                      navigate("/");
+                    }
+                  }]
+                }
+              ]}
             />
           </Sider>}
           <Content style={{ padding: '0 24px', minHeight: 280 }}>{content}</Content>

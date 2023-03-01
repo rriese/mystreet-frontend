@@ -1,9 +1,6 @@
 import React from 'react';
+import { Empty } from 'antd';
 
-const Test2 = () => {
-    return (
-        <b>Testando passar componente por parâmetro pro componente template do front!</b>
-    )
-}
+const Test2 = () => <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
 
 export default Test2;
