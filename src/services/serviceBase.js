@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ENV = 'LOCAL';
+const ENV = 'PRD';
 const BASE_URL = ENV === 'PRD' ?  'https://mystreet-backend.herokuapp.com/' : 'http://localhost:8080/';
 
 class ServiceBase {
@@ -64,7 +64,7 @@ class ServiceBase {
         let response;
         let token = ServiceBase.getToken();
         let headers = {};
-        debugger;
+
         if (token) {
             headers = {
                 'Authorization': `Bearer ${token}`

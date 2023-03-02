@@ -1,12 +1,23 @@
-import React from 'react';
-import { UserOutlined, DatabaseOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { React } from 'react';
+import { UserOutlined, DatabaseOutlined, LogoutOutlined, PlusOutlined } from '@ant-design/icons';
+import { Layout, Menu, theme, FloatButton } from 'antd';
 import { useNavigate } from "react-router-dom";
 import useAuth from '../../hooks/useAuth';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const Test = ({ content }) => {
+const styles = {
+  searchStyle: {
+    display: 'flex',
+    width: 200
+  },
+  floatbutton: {
+    width: 66,
+    height: 66
+  }
+}
+
+const Template = ({ content }) => {
   const navigate = useNavigate();
   const { signout } = useAuth();
   const {
@@ -18,19 +29,14 @@ const Test = ({ content }) => {
       <Header className="header">
         <div className="logo" />
         <Menu theme="dark" mode="horizontal">
-          <h3>MyStreet</h3>
+          <a href="#" onClick={() => navigate('/home')}><h3>MyStreet</h3></a>
         </Menu>
       </Header>
       <Content style={{ padding: '0 20px' }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-        </Breadcrumb>
         <Layout style={{ padding: '24px 0', background: colorBgContainer }}>
-          {<Sider style={{ background: colorBgContainer }} width={250}>
+          {<Sider theme="light" collapsible defaultCollapsed={true} style={{ background: colorBgContainer }} width={250}>
             <Menu
               mode="inline"
-              defaultSelectedKeys={['profile-nav']}
-              defaultOpenKeys={['profile-nav']}
               style={{ height: '100%' }}
               items={[
                 {
@@ -62,9 +68,10 @@ const Test = ({ content }) => {
           <Content style={{ padding: '0 24px', minHeight: 280 }}>{content}</Content>
         </Layout>
       </Content>
+      <FloatButton style={styles.floatbutton} icon={<PlusOutlined />} onClick={() => alert('Not implemented yet!')} />
       <Footer style={{ textAlign: 'center' }}>MyStreet © 2023</Footer>
     </Layout>
   );
 };
 
-export default Test;
+export default Template;

@@ -4,6 +4,7 @@ import Form from "../../components/Form";
 import Grid from "../../components/Grid";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { Card } from 'antd';
 
 const User = () => {
   const [users, setUsers] = useState([]);
@@ -29,11 +30,13 @@ const User = () => {
   }, [setUsers]);
 
   return (
-    <C.Container>
-      <C.Title>Usuários</C.Title>
-      <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
-      <Grid setOnEdit={setOnEdit} users={users} setUsers={setUsers} />
-    </C.Container>
+    <Card title="Usuários">
+      <C.Container>
+        <C.Title>Usuários</C.Title>
+        <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
+        <Grid setOnEdit={setOnEdit} users={users} setUsers={setUsers} />
+      </C.Container>
+    </Card>
   );
 };
 
