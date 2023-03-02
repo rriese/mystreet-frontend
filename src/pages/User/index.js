@@ -3,23 +3,17 @@ import * as C from "./styles";
 import Form from "../../components/Form";
 import Grid from "../../components/Grid";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { Card } from 'antd';
+import ServiceBase from "../../services/serviceBase";
 
 const User = () => {
   const [users, setUsers] = useState([]);
   const [onEdit, setOnEdit] = useState(null);
 
   const getUsers = async () => {
-    const userToken = JSON.parse(sessionStorage.getItem("user_token"));
-
     try {
-      const res = await axios.get("http://localhost:8080/api/user/", {
-        headers: {
-          'Authorization': `Bearer ${userToken.token}`
-        }
-      });
-      setUsers(res.data.sort((a, b) => (a.nome > b.nome ? 1 : -1)));
+      let res = await ServiceBase.getRequest('api/user/');
+      setUsers(res.content.sort((a, b) => (a.name > b.name ? 1 : -1)));
     } catch (error) {
       toast.error(error);
     }
