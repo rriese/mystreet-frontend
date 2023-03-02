@@ -4,17 +4,23 @@ import React from 'react';
 import { Card, Carousel } from 'antd';
 
 const contentStyle: React.CSSProperties = {
-    height: '160px',
+    height: '400px',
     color: '#fff',
     lineHeight: '160px',
     textAlign: 'center',
     background: '#364d79',
 };
 
+const carouselStyle = {
+    borderRadius:'20px',overflow:'hidden',
+    height:'400px',
+    background:'teal',
+}
+
 const Home = () => (
     <Card title="Reclamações">
         <Card type="inner" title="Buraco na rua 10" extra={<div><b>Autor: Rafael Riese</b></div>}>
-            <Carousel autoplay>
+            <Carousel style={carouselStyle} autoplay>
                 <div>
                     <h3 style={contentStyle}><img alt="Teste" width="100%" height="100%"
                         src="https://images.pexels.com/photos/33109/fall-autumn-red-season.jpg?auto=compress&cs=tinysrgb&w=1600"
