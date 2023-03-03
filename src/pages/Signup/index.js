@@ -46,7 +46,7 @@ const Signup = () => {
 
   return (
     <C.Container>
-      <Spin spinning={loading}>
+      <Spin spinning={loading} size="large">
         <C.Label>MYSTREET</C.Label>
         <C.Content>
           <Input
