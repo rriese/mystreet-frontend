@@ -14,7 +14,7 @@ const Private = ({ Item, Content }) => {
 
 const Authenticated = ({ Item }) => {
   const { signed } = useAuth();
-  return signed > 0 ? <Home /> : <Item />;
+  return signed > 0 ? <Template content={<Home />} /> : <Item />;
 };
 
 const RoutesApp = () => {
