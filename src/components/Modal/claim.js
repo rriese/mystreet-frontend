@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Modal, Input, Cascader, Spin } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
@@ -8,24 +8,29 @@ const { TextArea } = Input;
 
 const options = [
     {
-        value: 'sc',
+        value: 'Santa Catarina',
         label: 'Santa Catarina',
         children: [
             {
-                value: 'jgua',
+                value: 'Jaraguá do Sul',
                 label: 'Jaraguá do Sul'
+            },
+            {
+                value: 'Joinville',
+                label: 'Joinville'
             },
         ],
     }
 ];
 
 const ClaimModal = ({ isModalOpen, setIsModalOpen }) => {
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [state, setState] = useState("");
+    const [city, setCity] = useState("");
+    const [district, setDistrict] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const titleRef = useRef();
-    const descriptionRef = useRef();
-    const stateCityRef = useRef([]);
-    const districtRef = useRef();
     const location = useLocation();
 
     const handleCancel = () => {
@@ -33,25 +38,21 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen }) => {
     };
 
     const handleOk = async () => {
-        if (
-            !titleRef.current.input.value ||
-            !descriptionRef.current.resizableTextArea.textArea.value ||
-            (stateCityRef.current.innerText === 'Estado/Cidade') ||
-            !districtRef.current.input.value
-        ) {
+        if (!title ||
+            !description ||
+            !state ||
+            !city ||
+            !district) {
             toast.warn("Preencha todos os campos!");
         } else {
             setLoading(true);
 
-            let state = stateCityRef.current.innerText.split('/')[0].trim();
-            let city = stateCityRef.current.innerText.split('/')[1].trim();
-
             let serviceResponse = await ServiceBase.postRequest('api/claim/', {
-                title: titleRef.current.input.value,
-                description: descriptionRef.current.resizableTextArea.textArea.value,
+                title: title,
+                description: description,
                 state: state,
                 city: city,
-                district: districtRef.current.input.value
+                district: district
             });
 
             if (serviceResponse.responseType === 'OK') {
@@ -74,15 +75,15 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen }) => {
         <Modal destroyOnClose={true} title="Nova Reclamação" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Spin spinning={loading} size="large">
                 &nbsp;
-                <Input ref={titleRef} placeholder="Título" />
+                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título" />
                 &nbsp;
-                <TextArea ref={descriptionRef} rows={4} placeholder="Descrição" />
+                <TextArea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder="Descrição" />
                 &nbsp;
-                <span ref={stateCityRef}>
-                    <Cascader options={options} style={{ width: '100%' }} placeholder="Estado/Cidade" />
+                <span>
+                    <Cascader allowClear={false} onChange={(e) => { setState(e[0]); setCity(e[1]); }} options={options} style={{ width: '100%' }} placeholder="Estado/Cidade" />
                 </span>
                 &nbsp;
-                <Input ref={districtRef} placeholder="Bairro" />
+                <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="Bairro" />
             </Spin>
         </Modal>
     )

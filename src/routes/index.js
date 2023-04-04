@@ -6,6 +6,7 @@ import Signin from "../pages/Signin";
 import Signup from "../pages/Signup";
 import User from "../pages/User";
 import Template from "../pages/Ant";
+import AdminPage from "../pages/Admin";
 
 const Private = ({ Item, Content }) => {
   const { signed } = useAuth();
@@ -26,6 +27,7 @@ const RoutesApp = () => {
           <Route path="/" element={<Authenticated Item={Signin} />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />
+          <Route exact path="/admin" element={<Private Item={Template} Content={AdminPage} />} />
           <Route path="*" element={<Signin />} />
         </Routes>
       </Fragment>

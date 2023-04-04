@@ -4,6 +4,7 @@ import { Layout, Menu, theme, FloatButton } from 'antd';
 import { useNavigate } from "react-router-dom";
 import useAuth from '../../hooks/useAuth';
 import ClaimModal from '../../components/Modal/claim';
+import Utils from '../../services/utils';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -30,6 +31,55 @@ const Template = ({ content }) => {
     setIsModalOpen(true);
   };
 
+  const buildMenuItems = () => {
+    let options = [];
+    let menu = [{
+      key: 'profile-nav',
+      label: 'Perfil',
+      icon: <UserOutlined />,
+
+      children: options
+    }];
+
+    let isAdmin = Utils.isAdmin();
+
+    options.push({
+      key: 'profile',
+      label: 'Meu perfil',
+      icon: <DatabaseOutlined />
+    });
+    if (isAdmin) {
+      options.push({
+        key: 'admin',
+        label: 'Área administrativa',
+        icon: <DatabaseOutlined />,
+        onClick: () => {
+          navigate("/admin");
+        }
+      })
+    }
+    if (!isAdmin) {
+      options.push({
+        key: 'my_claims',
+        label: 'Minhas reclamações',
+        icon: <DatabaseOutlined />
+      })
+    }
+    options.push({
+      key: 'logout',
+      label: 'Sair',
+      icon: <LogoutOutlined />,
+      onClick: () => {
+        signout();
+        navigate("/");
+      }
+    })
+
+    return menu;
+  }
+
+  const menu = buildMenuItems();
+
   return (
     <>
       <Layout>
@@ -45,31 +95,7 @@ const Template = ({ content }) => {
               <Menu
                 mode="inline"
                 style={{ height: '100%' }}
-                items={[
-                  {
-                    key: 'profile-nav',
-                    label: 'Perfil',
-                    icon: <UserOutlined />,
-
-                    children: [{
-                      key: 'profile',
-                      label: 'Meu perfil',
-                      icon: <DatabaseOutlined />
-                    }, {
-                      key: 'my_claims',
-                      label: 'Minhas reclamações',
-                      icon: <DatabaseOutlined />
-                    }, {
-                      key: 'logout',
-                      label: 'Sair',
-                      icon: <LogoutOutlined />,
-                      onClick: () => {
-                        signout();
-                        navigate("/");
-                      }
-                    }]
-                  }
-                ]}
+                items={menu}
               />
             </Sider>}
             <Content style={{ padding: '0 24px', minHeight: 280 }}>{content}</Content>

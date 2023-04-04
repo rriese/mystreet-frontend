@@ -23,8 +23,17 @@ export const AuthProvider = ({ children }) => {
 
         if (serviceResponse && serviceResponse.responseType === 'OK') {
             let token = serviceResponse.content;
+
             sessionStorage.setItem("user_token", JSON.stringify({ email, token }));
             setUser({ email, token });
+
+            let isAdminServiceResponse = await ServiceBase.getRequest('api/utils/isadmin');
+            let isAdmin = false;
+
+            if (isAdminServiceResponse && isAdminServiceResponse.responseType === 'OK') {
+                isAdmin = isAdminServiceResponse.content;
+            }
+            sessionStorage.setItem("user_info", JSON.stringify({ isAdmin }));
         } else {
             response = 'Login ou senha incorretos';
         }
@@ -49,6 +58,7 @@ export const AuthProvider = ({ children }) => {
     const signout = () => {
         setUser(null);
         sessionStorage.removeItem("user_token");
+        sessionStorage.removeItem("user_info");
     };
 
     return (
