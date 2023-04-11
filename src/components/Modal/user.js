@@ -11,7 +11,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
     const [email, setEmail] = useState(dataEdit.email || "");
     const [password, setPassword] = useState("");
     const [userType, setUserType] = useState(dataEdit.userType || null);
-    const [userTypeDisabled, setUserTypeDisabled] = useState(dataEdit.userType ? true : false);
+    const [showDataOnCreate, setShowDataOnCreate] = useState(dataEdit.userType ? true : false);
 
     const clearInputFields = () => {
         setDataEdit([{}]);
@@ -84,7 +84,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                     &nbsp;
                     <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                     &nbsp;
-                    {!userTypeDisabled && <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" />}
+                    {!showDataOnCreate && <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" />}
                     &nbsp;
                     <Select
                         style={{ width: '100%' }}
@@ -96,7 +96,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                             { value: 'ROLE_VISITOR', label: 'Visitante' }
                         ]}
                         placeholder="Tipo de usuário"
-                        disabled={userTypeDisabled}
+                        disabled={showDataOnCreate}
                     />
                 </Spin>
             </Modal>

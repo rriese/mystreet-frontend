@@ -102,7 +102,7 @@ const Template = ({ content }) => {
           </Layout>
         </Content>
         <FloatButton style={styles.floatbutton} icon={<PlusOutlined />} onClick={showModal} />
-        <ClaimModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        { isModalOpen && <ClaimModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /> }
         <Footer style={{ textAlign: 'center' }}>MyStreet © 2023</Footer>
       </Layout>
     </>
