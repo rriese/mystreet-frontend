@@ -75,7 +75,7 @@ const User = () => {
                             render: (_, record) => (
                                 <Space size="middle">
                                     <FaEdit onClick={() => [
-                                        setDataEdit({ id: record.id, name: record.name, email: record.email, cpfCnpj: record.cpfCnpj }),
+                                        setDataEdit({ id: record.id, name: record.name, email: record.email, cpfCnpj: record.cpfCnpj, userType: record.profile.name }),
                                         showModal()
                                     ]} />
                                     <FaTrash onClick={() => handleDelete(record.id)} />

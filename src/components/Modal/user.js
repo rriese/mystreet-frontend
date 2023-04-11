@@ -1,27 +1,7 @@
 import { useState } from "react";
-import { Modal, Input, Cascader, Spin } from 'antd';
+import { Modal, Input, Spin, Select } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
-import { useNavigate, useLocation } from "react-router-dom";
-
-const { TextArea } = Input;
-
-const options = [
-    {
-        value: 'Santa Catarina',
-        label: 'Santa Catarina',
-        children: [
-            {
-                value: 'Jaraguá do Sul',
-                label: 'Jaraguá do Sul'
-            },
-            {
-                value: 'Joinville',
-                label: 'Joinville'
-            },
-        ],
-    }
-];
 
 const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUsers }) => {
     const [loading, setLoading] = useState(false);
@@ -29,12 +9,16 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
     const [name, setName] = useState(dataEdit.name || "");
     const [cpfCnpj, setCpfCnpj] = useState(dataEdit.cpfCnpj || "");
     const [email, setEmail] = useState(dataEdit.email || "");
+    const [password, setPassword] = useState("");
+    const [userType, setUserType] = useState(dataEdit.userType || null);
+    const [userTypeDisabled, setUserTypeDisabled] = useState(dataEdit.userType ? true : false);
 
     const clearInputFields = () => {
         setDataEdit([{}]);
         setName("");
         setCpfCnpj("");
         setEmail("");
+        setUserType(null);
     }
 
     const handleCancel = () => {
@@ -45,7 +29,9 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
     const handleOk = async () => {
         if (!name ||
             !cpfCnpj ||
-            !email) {
+            !email ||
+            !userType ||
+            (dataEdit.id ? false : !password)) {
             toast.warn("Preencha todos os campos!");
         } else {
             setLoading(true);
@@ -64,39 +50,34 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                     toast.error(serviceResponse.content);
                 }
             } else {
-
+                if (userType === 'ROLE_CITY_HALL') {
+                    alert('Vamos criar uma prefeitura!');
+                } else if (userType === 'ROLE_ADMIN') {
+                    alert('Vamos criar um admin!')
+                } else {
+                    let serviceResponse = await ServiceBase.postRequest('api/user/', {
+                        id: id,
+                        name: name,
+                        email: email,
+                        cpfCnpj: cpfCnpj,
+                        password: password
+                    });
+    
+                    if (serviceResponse && serviceResponse.responseType === 'OK') {
+                        toast.success('Usuário criado com sucesso!');
+                    } else {
+                        toast.error(serviceResponse.content);
+                    }
+                }
             }
 
             handleCancel();
             getUsers();
         }
-        //         setLoading(true);
-
-        //         let serviceResponse = await ServiceBase.postRequest('api/claim/', {
-        //             title: title,
-        //             description: description,
-        //             state: state,
-        //             city: city,
-        //             district: district
-        //         });
-
-        //         if (serviceResponse.responseType === 'OK') {
-        //             toast.success('Reclamação criada com sucesso!');
-        //             setIsModalOpen(false);
-
-        //             if (location.pathname === '/home') {
-        //                 navigate(0);
-        //             } else {
-        //                 navigate('/home');
-        //             }
-        //         } else {
-        //             toast.error(serviceResponse.content);
-        //         }
-        //         setLoading(false);
-        //     }
     };
 
     return (
+        <>
         <Modal title="Usuário" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Spin spinning={loading} size="large">
                 &nbsp;
@@ -106,8 +87,24 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                 <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} placeholder="Cpf/Cnpj" />
                 &nbsp;
                 <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+                &nbsp;
+                { !userTypeDisabled && <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" /> }
+                &nbsp;
+                <Select
+                    style={{ width: '100%' }}
+                    value={userType}
+                    onSelect={(e) => setUserType(e)}
+                    options={[
+                        { value: 'ROLE_ADMIN', label: 'Administrador' },
+                        { value: 'ROLE_CITY_HALL', label: 'Prefeitura' },
+                        { value: 'ROLE_VISITOR', label: 'Visitante' }
+                    ]}
+                    placeholder="Tipo de usuário"
+                    disabled={userTypeDisabled}
+                />
             </Spin>
         </Modal>
+        </>
     )
 }
 
