@@ -50,24 +50,20 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                     toast.error(serviceResponse.content);
                 }
             } else {
-                if (userType === 'ROLE_CITY_HALL') {
-                    alert('Vamos criar uma prefeitura!');
-                } else if (userType === 'ROLE_ADMIN') {
-                    alert('Vamos criar um admin!')
+                let resource = userType === 'ROLE_CITY_HALL' ? 'api/admin/createcityhalluser' :
+                    userType === 'ROLE_ADMIN' ? 'api/admin/createadminuser' : 'api/user/';
+
+                let serviceResponse = await ServiceBase.postRequest(resource, {
+                    name: name,
+                    email: email,
+                    cpfCnpj: cpfCnpj,
+                    password: password
+                });
+
+                if (serviceResponse && serviceResponse.responseType === 'OK') {
+                    toast.success('Usuário criado com sucesso!');
                 } else {
-                    let serviceResponse = await ServiceBase.postRequest('api/user/', {
-                        id: id,
-                        name: name,
-                        email: email,
-                        cpfCnpj: cpfCnpj,
-                        password: password
-                    });
-    
-                    if (serviceResponse && serviceResponse.responseType === 'OK') {
-                        toast.success('Usuário criado com sucesso!');
-                    } else {
-                        toast.error(serviceResponse.content);
-                    }
+                    toast.error(serviceResponse.content);
                 }
             }
 
@@ -78,32 +74,32 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
 
     return (
         <>
-        <Modal title="Usuário" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Spin spinning={loading} size="large">
-                &nbsp;
-                <Input type="hidden" value={id} />
-                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" />
-                &nbsp;
-                <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} placeholder="Cpf/Cnpj" />
-                &nbsp;
-                <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-                &nbsp;
-                { !userTypeDisabled && <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" /> }
-                &nbsp;
-                <Select
-                    style={{ width: '100%' }}
-                    value={userType}
-                    onSelect={(e) => setUserType(e)}
-                    options={[
-                        { value: 'ROLE_ADMIN', label: 'Administrador' },
-                        { value: 'ROLE_CITY_HALL', label: 'Prefeitura' },
-                        { value: 'ROLE_VISITOR', label: 'Visitante' }
-                    ]}
-                    placeholder="Tipo de usuário"
-                    disabled={userTypeDisabled}
-                />
-            </Spin>
-        </Modal>
+            <Modal title="Usuário" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <Spin spinning={loading} size="large">
+                    &nbsp;
+                    <Input type="hidden" value={id} />
+                    <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" />
+                    &nbsp;
+                    <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} placeholder="Cpf/Cnpj" />
+                    &nbsp;
+                    <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+                    &nbsp;
+                    {!userTypeDisabled && <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" />}
+                    &nbsp;
+                    <Select
+                        style={{ width: '100%' }}
+                        value={userType}
+                        onSelect={(e) => setUserType(e)}
+                        options={[
+                            { value: 'ROLE_ADMIN', label: 'Administrador' },
+                            { value: 'ROLE_CITY_HALL', label: 'Prefeitura' },
+                            { value: 'ROLE_VISITOR', label: 'Visitante' }
+                        ]}
+                        placeholder="Tipo de usuário"
+                        disabled={userTypeDisabled}
+                    />
+                </Spin>
+            </Modal>
         </>
     )
 }
