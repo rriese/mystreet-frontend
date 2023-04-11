@@ -29,11 +29,22 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen }) => {
     const [state, setState] = useState("");
     const [city, setCity] = useState("");
     const [district, setDistrict] = useState("");
+    const [teste, setTeste] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
+    const clearInputFields = () => {
+        setTitle("");
+        setDescription("");
+        setState("");
+        setCity("");
+        setDistrict("");
+        setTeste("");
+    }
+
     const handleCancel = () => {
+        clearInputFields();
         setIsModalOpen(false);
     };
 
@@ -72,7 +83,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen }) => {
     };
 
     return (
-        <Modal destroyOnClose={true} title="Nova Reclamação" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <Modal title="Nova Reclamação" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Spin spinning={loading} size="large">
                 &nbsp;
                 <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título" />
@@ -80,7 +91,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen }) => {
                 <TextArea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder="Descrição" />
                 &nbsp;
                 <span>
-                    <Cascader allowClear={false} onChange={(e) => { setState(e[0]); setCity(e[1]); }} options={options} style={{ width: '100%' }} placeholder="Estado/Cidade" />
+                    <Cascader value={teste} allowClear={false} onChange={(e) => { setState(e[0]); setCity(e[1]); }} options={options} style={{ width: '100%' }} placeholder="Estado/Cidade" />
                 </span>
                 &nbsp;
                 <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="Bairro" />

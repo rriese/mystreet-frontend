@@ -7,6 +7,7 @@ import UserModal from "../../components/Modal/user";
 
 const User = () => {
     const [users, setUsers] = useState([]);
+    const [dataEdit, setDataEdit] = useState([{}]);
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -74,7 +75,7 @@ const User = () => {
                             render: (_, record) => (
                                 <Space size="middle">
                                     <FaEdit onClick={() => [
-                                        // setDataEdit({ name: record.name, email: record.email, cpfCnpj: record.cpfCnpj }),
+                                        setDataEdit({ id: record.id, name: record.name, email: record.email, cpfCnpj: record.cpfCnpj }),
                                         showModal()
                                     ]} />
                                     <FaTrash onClick={() => handleDelete(record.id)} />
@@ -84,7 +85,7 @@ const User = () => {
                     ]} dataSource={users} />
                 </Spin>
             </Card>
-            <UserModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+            {isModalOpen && (<UserModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} dataEdit={dataEdit} setDataEdit={setDataEdit} getUsers={getUsers} />)}
         </>
     );
 };

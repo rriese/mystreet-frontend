@@ -23,13 +23,15 @@ const options = [
     }
 ];
 
-const UserModal = ({ isModalOpen, setIsModalOpen }) => {
+const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUsers }) => {
     const [loading, setLoading] = useState(false);
-    const [name, setName] = useState("");
-    const [cpfCnpj, setCpfCnpj] = useState( "");
-    const [email, setEmail] = useState("");
+    const [id, setId] = useState(dataEdit.id || "");
+    const [name, setName] = useState(dataEdit.name || "");
+    const [cpfCnpj, setCpfCnpj] = useState(dataEdit.cpfCnpj || "");
+    const [email, setEmail] = useState(dataEdit.email || "");
 
     const clearInputFields = () => {
+        setDataEdit([{}]);
         setName("");
         setCpfCnpj("");
         setEmail("");
@@ -41,13 +43,33 @@ const UserModal = ({ isModalOpen, setIsModalOpen }) => {
     };
 
     const handleOk = async () => {
-        //     if (!title ||
-        //         !description ||
-        //         !state ||
-        //         !city ||
-        //         !district) {
-        //         toast.warn("Preencha todos os campos!");
-        //     } else {
+        if (!name ||
+            !cpfCnpj ||
+            !email) {
+            toast.warn("Preencha todos os campos!");
+        } else {
+            setLoading(true);
+
+            if (dataEdit.id) {
+                let serviceResponse = await ServiceBase.putRequest('api/user/', {
+                    id: id,
+                    name: name,
+                    email: email,
+                    cpfCnpj: cpfCnpj
+                });
+
+                if (serviceResponse && serviceResponse.responseType === 'OK') {
+                    toast.success('Usuário atualizado com sucesso!');
+                } else {
+                    toast.error(serviceResponse.content);
+                }
+            } else {
+
+            }
+
+            handleCancel();
+            getUsers();
+        }
         //         setLoading(true);
 
         //         let serviceResponse = await ServiceBase.postRequest('api/claim/', {
@@ -75,9 +97,10 @@ const UserModal = ({ isModalOpen, setIsModalOpen }) => {
     };
 
     return (
-        <Modal destroyOnClose={true} title="Usuário" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <Modal title="Usuário" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Spin spinning={loading} size="large">
                 &nbsp;
+                <Input type="hidden" value={id} />
                 <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" />
                 &nbsp;
                 <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} placeholder="Cpf/Cnpj" />
