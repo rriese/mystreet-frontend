@@ -26,6 +26,7 @@ const User = () => {
     };
 
     const handleDelete = async (id) => {
+        setLoading(true);
         const serviceResponse = await ServiceBase.deleteRequest(`api/user/${id}`);
 
         if (serviceResponse && serviceResponse.responseType === 'OK') {
@@ -35,6 +36,7 @@ const User = () => {
         } else {
             toast.error('Erro ao deletar usuário');
         }
+        setLoading(false);
     };
 
     useEffect(() => {
