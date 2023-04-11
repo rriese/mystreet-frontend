@@ -29,7 +29,14 @@ const UserModal = ({ isModalOpen, setIsModalOpen }) => {
     const [cpfCnpj, setCpfCnpj] = useState( "");
     const [email, setEmail] = useState("");
 
+    const clearInputFields = () => {
+        setName("");
+        setCpfCnpj("");
+        setEmail("");
+    }
+
     const handleCancel = () => {
+        clearInputFields();
         setIsModalOpen(false);
     };
 
