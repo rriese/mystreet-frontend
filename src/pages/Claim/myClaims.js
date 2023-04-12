@@ -39,19 +39,23 @@ const MyClaims = () => {
                         },
                         {
                             title: 'Descrição',
-                            dataIndex: 'description'
+                            dataIndex: 'description',
+                            responsive: ['md']
                         },
                         {
                             title: 'Estado',
-                            dataIndex: 'state'
+                            dataIndex: 'state',
+                            responsive: ['lg']
                         },
                         {
                             title: 'Cidade',
-                            dataIndex: 'city'
+                            dataIndex: 'city',
+                            responsive: ['lg']
                         },
                         {
                             title: 'Bairro',
-                            dataIndex: 'district'
+                            dataIndex: 'district',
+                            responsive: ['lg']
                         },
                         {
                             title: 'Status',

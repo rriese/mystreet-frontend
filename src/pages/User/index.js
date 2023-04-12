@@ -63,15 +63,18 @@ const User = () => {
                             title: 'Email',
                             dataIndex: 'email',
                             key: 'email',
+                            responsive: ['md']
                         },
                         {
                             title: 'Cpf/Cnpj',
                             dataIndex: 'cpfCnpj',
                             key: 'cpfCnpj',
+                            responsive: ['lg']
                         },
                         {
                             title: 'Ação',
                             key: 'action',
+                            responsive: ['sm'],
                             render: (_, record) => (
                                 <Space size="middle">
                                     <FaEdit onClick={() => [
