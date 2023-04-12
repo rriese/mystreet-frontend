@@ -8,6 +8,7 @@ import Template from "../pages/Ant";
 import AdminPage from "../pages/Admin";
 import User from "../pages/User";
 import Utils from "../services/utils";
+import MyClaims from "../pages/Claim/myClaims";
 
 const Private = ({ Item, Content }) => {
   const { signed } = useAuth();
@@ -34,6 +35,7 @@ const RoutesApp = () => {
           <Route path="/" element={<Authenticated Item={Signin} />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />
+          <Route exact path="/myclaims" element={<Private Item={Template} Content={MyClaims} />} />
           <Route path="*" element={<Signin />} />
         </Routes>
       </Fragment>

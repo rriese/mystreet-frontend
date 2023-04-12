@@ -62,7 +62,10 @@ const Template = ({ content }) => {
       options.push({
         key: 'my_claims',
         label: 'Minhas reclamações',
-        icon: <DatabaseOutlined />
+        icon: <DatabaseOutlined />,
+        onClick: () => {
+          navigate("/myclaims");
+        }
       })
     }
     options.push({
