@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaTrash, FaEdit, FaClock, FaCheck } from "react-icons/fa";
-import { Space, Table, Spin, Button, Card } from 'antd';
+import { Space, Table, Spin, Button, Card, Tooltip } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 
@@ -13,7 +13,6 @@ const MyClaims = () => {
             setLoading(true);
             let res = await ServiceBase.getRequest('api/claim/myclaims');
             setClaims(res.content.sort((a, b) => (a.title > b.title ? 1 : -1)));
-            console.log(res.content);
         } catch (error) {
             toast.error(error);
         }
@@ -62,7 +61,9 @@ const MyClaims = () => {
                             dataIndex: ['status', 'name'],
                             render: (text, _) => (
                                 <center>
-                                    {text === 'Pendente' ? <FaClock /> : <FaCheck />}
+                                    <Tooltip title={text}>
+                                        {text === 'Pendente' ? <FaClock /> : <FaCheck />}
+                                    </Tooltip>
                                 </center>
                             ),
                         },
