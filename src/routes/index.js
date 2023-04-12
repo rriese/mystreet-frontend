@@ -9,6 +9,7 @@ import AdminPage from "../pages/Admin";
 import User from "../pages/User";
 import Utils from "../services/utils";
 import MyClaims from "../pages/Claim/myClaims";
+import Profile from "../pages/User/profile";
 
 const Private = ({ Item, Content }) => {
   const { signed } = useAuth();
@@ -36,6 +37,7 @@ const RoutesApp = () => {
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />
           <Route exact path="/myclaims" element={<Private Item={Template} Content={MyClaims} />} />
+          <Route exact path="/profile" element={<Private Item={Template} Content={Profile} />} />
           <Route path="*" element={<Signin />} />
         </Routes>
       </Fragment>

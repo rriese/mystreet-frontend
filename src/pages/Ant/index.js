@@ -46,7 +46,10 @@ const Template = ({ content }) => {
     options.push({
       key: 'profile',
       label: 'Meu perfil',
-      icon: <DatabaseOutlined />
+      icon: <DatabaseOutlined />,
+      onClick: () => {
+        navigate("/profile");
+      }
     });
     if (isAdmin) {
       options.push({

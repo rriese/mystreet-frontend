@@ -26,7 +26,7 @@ const MyClaims = () => {
 
     useEffect(() => {
         getClaims();
-    }, [setClaims]);
+    }, []);
 
     return (
         <>
