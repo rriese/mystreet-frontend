@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 import { UserOutlined, DatabaseOutlined, LogoutOutlined, PlusOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, FloatButton } from 'antd';
+import { Layout, Menu, theme, FloatButton, Space } from 'antd';
 import { useNavigate } from "react-router-dom";
 import useAuth from '../../hooks/useAuth';
 import ClaimModal from '../../components/Modal/claim';
@@ -23,6 +23,8 @@ const Template = ({ content }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { signout } = useAuth();
+  debugger;
+  const userName = Utils.getUserName();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -91,8 +93,13 @@ const Template = ({ content }) => {
       <Layout>
         <Header className="header">
           <div className="logo" />
-          <Menu theme="dark" mode="horizontal">
-            <a href="#" onClick={() => navigate('/home')}><h3>MyStreet</h3></a>
+          <Menu theme="dark" mode="horizontal" selectable={false}>
+            <Menu.Item onClick={() => navigate('/home')} >
+              <h3>MyStreet</h3>
+            </Menu.Item>
+            <Menu.Item style={{ marginLeft: 'auto', pointerEvents: 'none' }} >
+              {userName && 'Bem vindo(a) ' + userName + '!' }
+            </Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: '0 20px' }}>
@@ -108,7 +115,7 @@ const Template = ({ content }) => {
           </Layout>
         </Content>
         <FloatButton style={styles.floatbutton} icon={<PlusOutlined />} onClick={showModal} />
-        { isModalOpen && <ClaimModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} /> }
+        {isModalOpen && <ClaimModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />}
         <Footer style={{ textAlign: 'center' }}>MyStreet © 2023</Footer>
       </Layout>
     </>

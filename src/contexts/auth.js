@@ -33,7 +33,14 @@ export const AuthProvider = ({ children }) => {
             if (isAdminServiceResponse && isAdminServiceResponse.responseType === 'OK') {
                 isAdmin = isAdminServiceResponse.content;
             }
-            sessionStorage.setItem("user_info", JSON.stringify({ isAdmin }));
+
+            let currentUser = await ServiceBase.getRequest('api/user/currentuser');
+            let userName = '';
+
+            if (currentUser && currentUser.responseType === 'OK') {
+                userName = currentUser.content.name;
+            }
+            sessionStorage.setItem("user_info", JSON.stringify({ isAdmin, userName }));
         } else {
             response = 'Login ou senha incorretos';
         }
