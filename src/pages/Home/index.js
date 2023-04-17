@@ -34,7 +34,7 @@ const Home = () => {
 
     useEffect(() => {
         getClaims();
-    }, [setClaims]);
+    }, []);
 
     return (
         <Spin spinning={loading} size="large">

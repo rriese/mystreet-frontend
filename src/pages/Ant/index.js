@@ -23,7 +23,6 @@ const Template = ({ content }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { signout } = useAuth();
-  debugger;
   const userName = Utils.getUserName();
   const {
     token: { colorBgContainer },

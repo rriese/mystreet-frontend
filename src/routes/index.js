@@ -33,7 +33,6 @@ const RoutesApp = () => {
         <Routes>
           <Route exact path="/admin" element={<Admin Item={Template} Content={AdminPage} />} />
           <Route exact path="/admin/user" element={<Admin Item={Template} Content={User} />} />
-          <Route path="/" element={<Authenticated Item={Signin} />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />
           <Route exact path="/myclaims" element={<Private Item={Template} Content={MyClaims} />} />
