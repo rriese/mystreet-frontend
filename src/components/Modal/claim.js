@@ -3,6 +3,7 @@ import { Modal, Input, Cascader, Spin } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 import { useNavigate, useLocation } from "react-router-dom";
+import { getStatusClassNames } from "antd/es/_util/statusUtils";
 
 const { TextArea } = Input;
 
@@ -23,22 +24,22 @@ const options = [
     }
 ];
 
-const ClaimModal = ({ isModalOpen, setIsModalOpen }) => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [state, setState] = useState("");
-    const [city, setCity] = useState("");
-    const [district, setDistrict] = useState("");
+const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
+    const [id, setId] = useState((dataEdit && dataEdit.id) || "");
+    const [title, setTitle] = useState((dataEdit && dataEdit.title) || "");
+    const [description, setDescription] = useState((dataEdit && dataEdit.description) || "");
+    const [district, setDistrict] = useState((dataEdit && dataEdit.district) || "");
     const [loading, setLoading] = useState(false);
+    const [stateAndCity, setStateAndCity] = useState((dataEdit && dataEdit.stateAndCity) || []);
     const navigate = useNavigate();
     const location = useLocation();
 
     const clearInputFields = () => {
         setTitle("");
         setDescription("");
-        setState("");
-        setCity("");
+        setStateAndCity("");
         setDistrict("");
+        setStateAndCity([]);
     }
 
     const handleCancel = () => {
@@ -49,47 +50,69 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen }) => {
     const handleOk = async () => {
         if (!title ||
             !description ||
-            !state ||
-            !city ||
+            !stateAndCity[0] ||
             !district) {
             toast.warn("Preencha todos os campos!");
         } else {
-            setLoading(true);
+            if (id) {
+                setLoading(true);
 
-            let serviceResponse = await ServiceBase.postRequest('api/claim/', {
-                title: title,
-                description: description,
-                state: state,
-                city: city,
-                district: district
-            });
+                let serviceResponse = await ServiceBase.putRequest('api/claim/', {
+                    id: id,
+                    title: title,
+                    description: description,
+                    state: stateAndCity[0],
+                    city: stateAndCity[1],
+                    district: district
+                });
 
-            if (serviceResponse.responseType === 'OK') {
-                toast.success('Reclamação criada com sucesso!');
-                setIsModalOpen(false);
-
-                if (location.pathname === '/home') {
-                    navigate(0);
+                if (serviceResponse.responseType === 'OK') {
+                    toast.success('Reclamação atualizada com sucesso!');
+                    setIsModalOpen(false);
+                    getClaims();
                 } else {
-                    navigate('/home');
+                    toast.error(serviceResponse.content);
                 }
+                setLoading(false);
             } else {
-                toast.error(serviceResponse.content);
+                setLoading(true);
+
+                let serviceResponse = await ServiceBase.postRequest('api/claim/', {
+                    title: title,
+                    description: description,
+                    state: stateAndCity[0],
+                    city: stateAndCity[1],
+                    district: district
+                });
+
+                if (serviceResponse.responseType === 'OK') {
+                    toast.success('Reclamação criada com sucesso!');
+                    setIsModalOpen(false);
+
+                    if (location.pathname === '/home') {
+                        navigate(0);
+                    } else {
+                        navigate('/home');
+                    }
+                } else {
+                    toast.error(serviceResponse.content);
+                }
+                setLoading(false);
             }
-            setLoading(false);
         }
     };
 
     return (
-        <Modal title="Nova Reclamação" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <Modal title="Reclamação" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Spin spinning={loading} size="large">
                 &nbsp;
+                <Input type="hidden" value={id} />
                 <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título" />
                 &nbsp;
                 <TextArea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder="Descrição" />
                 &nbsp;
                 <span>
-                    <Cascader allowClear={false} onChange={(e) => { setState(e[0]); setCity(e[1]); }} options={options} style={{ width: '100%' }} placeholder="Estado/Cidade" />
+                    <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={options} style={{ width: '100%' }} placeholder="Estado/Cidade" />
                 </span>
                 &nbsp;
                 <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="Bairro" />

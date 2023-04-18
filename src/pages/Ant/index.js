@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 import { UserOutlined, DatabaseOutlined, LogoutOutlined, PlusOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, FloatButton, Space } from 'antd';
+import { Layout, Menu, theme, FloatButton } from 'antd';
 import { useNavigate } from "react-router-dom";
 import useAuth from '../../hooks/useAuth';
 import ClaimModal from '../../components/Modal/claim';

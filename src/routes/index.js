@@ -21,11 +21,6 @@ const Admin = ({ Item, Content }) => {
   return isAdmin ? (Content ? <Item content={<Content />} /> : <Item />) : <Template content={<Home />} />;
 };
 
-const Authenticated = ({ Item }) => {
-  const { signed } = useAuth();
-  return signed > 0 ? <Template content={<Home />} /> : <Item />;
-};
-
 const RoutesApp = () => {
   return (
     <BrowserRouter>
