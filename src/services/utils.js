@@ -20,6 +20,35 @@ class Utils {
 
         return '';
     }
+
+    static availableStatesAndCities = () => {
+        return [
+            {
+                value: 'Santa Catarina',
+                label: 'Santa Catarina',
+                children: [
+                    {
+                        value: 'Jaraguá do Sul',
+                        label: 'Jaraguá do Sul'
+                    },
+                    {
+                        value: 'Joinville',
+                        label: 'Joinville'
+                    },
+                ],
+            },
+            {
+                value: 'Paraná',
+                label: 'Paraná',
+                children: [
+                    {
+                        value: 'Curitiba',
+                        label: 'Curitiba'
+                    }
+                ],
+            }
+        ];
+    }
 }
 
 export default Utils;

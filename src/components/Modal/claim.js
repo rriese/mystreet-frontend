@@ -3,25 +3,9 @@ import { Modal, Input, Cascader, Spin } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 import { useNavigate, useLocation } from "react-router-dom";
+import Utils from "../../services/utils";
 
 const { TextArea } = Input;
-
-const options = [
-    {
-        value: 'Santa Catarina',
-        label: 'Santa Catarina',
-        children: [
-            {
-                value: 'Jaraguá do Sul',
-                label: 'Jaraguá do Sul'
-            },
-            {
-                value: 'Joinville',
-                label: 'Joinville'
-            },
-        ],
-    }
-];
 
 const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
     const [id, setId] = useState((dataEdit && dataEdit.id) || "");
@@ -111,7 +95,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                 <TextArea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder="Descrição" />
                 &nbsp;
                 <span>
-                    <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={options} style={{ width: '100%' }} placeholder="Estado/Cidade" />
+                    <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} placeholder="Estado/Cidade" />
                 </span>
                 &nbsp;
                 <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="Bairro" />

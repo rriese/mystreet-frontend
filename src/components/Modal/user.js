@@ -2,23 +2,7 @@ import { useState } from "react";
 import { Modal, Input, Spin, Select, Cascader } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
-
-const options = [
-    {
-        value: 'Santa Catarina',
-        label: 'Santa Catarina',
-        children: [
-            {
-                value: 'Jaraguá do Sul',
-                label: 'Jaraguá do Sul'
-            },
-            {
-                value: 'Joinville',
-                label: 'Joinville'
-            },
-        ],
-    }
-];
+import Utils from "../../services/utils";
 
 const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUsers, isCityHall }) => {
     const [loading, setLoading] = useState(false);
@@ -145,7 +129,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                     &nbsp;
                     {!showDataOnCreate && <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" />}
                     &nbsp;
-                    {isCityHall && <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={options} style={{ width: '100%' }} placeholder="Estado/Cidade" />}
+                    {isCityHall && <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} placeholder="Estado/Cidade" />}
                     &nbsp;
                     <Select
                         style={{ width: '100%' }}
