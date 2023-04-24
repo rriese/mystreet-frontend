@@ -10,6 +10,7 @@ import User from "../pages/User";
 import Utils from "../services/utils";
 import MyClaims from "../pages/Claim/myClaims";
 import Profile from "../pages/User/profile";
+import CityHall from "../pages/CityHall";
 
 const Private = ({ Item, Content }) => {
   const { signed } = useAuth();
@@ -28,6 +29,7 @@ const RoutesApp = () => {
         <Routes>
           <Route exact path="/admin" element={<Admin Item={Template} Content={AdminPage} />} />
           <Route exact path="/admin/user" element={<Admin Item={Template} Content={User} />} />
+          <Route exact path="/admin/cityhall" element={<Admin Item={Template} Content={CityHall} />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />
           <Route exact path="/myclaims" element={<Private Item={Template} Content={MyClaims} />} />

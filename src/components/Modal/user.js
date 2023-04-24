@@ -1,16 +1,34 @@
 import { useState } from "react";
-import { Modal, Input, Spin, Select } from 'antd';
+import { Modal, Input, Spin, Select, Cascader } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 
-const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUsers }) => {
+const options = [
+    {
+        value: 'Santa Catarina',
+        label: 'Santa Catarina',
+        children: [
+            {
+                value: 'Jaraguá do Sul',
+                label: 'Jaraguá do Sul'
+            },
+            {
+                value: 'Joinville',
+                label: 'Joinville'
+            },
+        ],
+    }
+];
+
+const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUsers, isCityHall }) => {
     const [loading, setLoading] = useState(false);
     const [id, setId] = useState(dataEdit.id || "");
     const [name, setName] = useState(dataEdit.name || "");
     const [cpfCnpj, setCpfCnpj] = useState(dataEdit.cpfCnpj || "");
     const [email, setEmail] = useState(dataEdit.email || "");
     const [password, setPassword] = useState("");
-    const [userType, setUserType] = useState(dataEdit.userType || null);
+    const [stateAndCity, setStateAndCity] = useState((dataEdit && dataEdit.stateAndCity) || []);
+    const [userType, setUserType] = useState(dataEdit.userType || (isCityHall ? "ROLE_CITY_HALL" : null) || null);
     const [showDataOnCreate, setShowDataOnCreate] = useState(dataEdit.userType ? true : false);
 
     const clearInputFields = () => {
@@ -19,6 +37,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
         setCpfCnpj("");
         setEmail("");
         setUserType(null);
+        setStateAndCity([]);
     }
 
     const handleCancel = () => {
@@ -31,18 +50,32 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
             !cpfCnpj ||
             !email ||
             !userType ||
+            (isCityHall ? !stateAndCity[0] : false) ||
             (dataEdit.id ? false : !password)) {
             toast.warn("Preencha todos os campos!");
         } else {
             setLoading(true);
 
             if (dataEdit.id) {
-                let serviceResponse = await ServiceBase.putRequest('api/user/', {
-                    id: id,
-                    name: name,
-                    email: email,
-                    cpfCnpj: cpfCnpj
-                });
+                let serviceResponse;
+                
+                if (isCityHall) {
+                    serviceResponse = await ServiceBase.putRequest('api/user/', {
+                        id: id,
+                        name: name,
+                        email: email,
+                        cpfCnpj: cpfCnpj,
+                        state: stateAndCity[0],
+                        city: stateAndCity[1]
+                    });
+                } else {
+                    serviceResponse = await ServiceBase.putRequest('api/user/', {
+                        id: id,
+                        name: name,
+                        email: email,
+                        cpfCnpj: cpfCnpj
+                    });
+                }
 
                 if (serviceResponse && serviceResponse.responseType === 'OK') {
                     toast.success('Usuário atualizado com sucesso!');
@@ -53,12 +86,25 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                 let resource = userType === 'ROLE_CITY_HALL' ? 'api/admin/createcityhalluser' :
                     userType === 'ROLE_ADMIN' ? 'api/admin/createadminuser' : 'api/user/';
 
-                let serviceResponse = await ServiceBase.postRequest(resource, {
-                    name: name,
-                    email: email,
-                    cpfCnpj: cpfCnpj,
-                    password: password
-                });
+                let serviceResponse;
+
+                if (isCityHall) {
+                    serviceResponse = await ServiceBase.postRequest(resource, {
+                        name: name,
+                        email: email,
+                        cpfCnpj: cpfCnpj,
+                        password: password,
+                        state: stateAndCity[0],
+                        city: stateAndCity[1]
+                    });
+                } else {
+                    serviceResponse = await ServiceBase.postRequest(resource, {
+                        name: name,
+                        email: email,
+                        cpfCnpj: cpfCnpj,
+                        password: password
+                    });
+                }
 
                 if (serviceResponse && serviceResponse.responseType === 'OK') {
                     toast.success('Usuário criado com sucesso!');
@@ -71,6 +117,19 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
             getUsers();
         }
     };
+
+    const getUserTypeOptions = (isCityHall) => {
+        let data = [];
+
+        if (isCityHall) {
+            data.push({ value: 'ROLE_CITY_HALL', label: 'Prefeitura' });
+        } else {
+            data.push({ value: 'ROLE_ADMIN', label: 'Administrador' });
+            data.push({ value: 'ROLE_VISITOR', label: 'Visitante' });
+        }
+
+        return data;        
+    }
 
     return (
         <>
@@ -86,15 +145,13 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                     &nbsp;
                     {!showDataOnCreate && <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" />}
                     &nbsp;
+                    {isCityHall && <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={options} style={{ width: '100%' }} placeholder="Estado/Cidade" />}
+                    &nbsp;
                     <Select
                         style={{ width: '100%' }}
                         value={userType}
                         onSelect={(e) => setUserType(e)}
-                        options={[
-                            { value: 'ROLE_ADMIN', label: 'Administrador' },
-                            { value: 'ROLE_CITY_HALL', label: 'Prefeitura' },
-                            { value: 'ROLE_VISITOR', label: 'Visitante' }
-                        ]}
+                        options={getUserTypeOptions(isCityHall)}
                         placeholder="Tipo de usuário"
                         disabled={showDataOnCreate}
                     />

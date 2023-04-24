@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 import UserModal from "../../components/Modal/user";
 
-const User = () => {
+const CityHall = () => {
     const [users, setUsers] = useState([]);
     const [dataEdit, setDataEdit] = useState([{}]);
     const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ const User = () => {
     const getUsers = async () => {
         try {
             setLoading(true);
-            let res = await ServiceBase.getRequest('api/user/excludecityhall');
+            let res = await ServiceBase.getRequest('api/user/cityhall');
             setUsers(res.content.sort((a, b) => (a.name > b.name ? 1 : -1)));
         } catch (error) {
             toast.error(error);
@@ -33,9 +33,9 @@ const User = () => {
         if (serviceResponse && serviceResponse.responseType === 'OK') {
             const newArray = users.filter((user) => user.id !== id);
             setUsers(newArray);
-            toast.success("Usuário deletado com sucesso!");
+            toast.success("Prefeitura deletada com sucesso!");
         } else {
-            toast.error('Erro ao deletar usuário');
+            toast.error('Erro ao deletar prefeitura');
         }
         setLoading(false);
     };
@@ -46,9 +46,9 @@ const User = () => {
 
     return (
         <>
-            <Card title="Usuários">
+            <Card title="Prefeituras">
                 <Button type="primary" onClick={() => [showModal()]}>
-                    Novo Usuário
+                    Nova Prefeitura
                 </Button>
                 <br />
                 <br />
@@ -66,9 +66,21 @@ const User = () => {
                             responsive: ['md']
                         },
                         {
-                            title: 'Cpf/Cnpj',
+                            title: 'Cnpj',
                             dataIndex: 'cpfCnpj',
                             key: 'cpfCnpj',
+                            responsive: ['lg']
+                        },
+                        {
+                            title: 'Estado',
+                            dataIndex: 'state',
+                            key: 'state',
+                            responsive: ['lg']
+                        },
+                        {
+                            title: 'Cidade',
+                            dataIndex: 'city',
+                            key: 'city',
                             responsive: ['lg']
                         },
                         {
@@ -78,7 +90,7 @@ const User = () => {
                             render: (_, record) => (
                                 <Space size="middle">
                                     <FaEdit onClick={() => [
-                                        setDataEdit({ id: record.id, name: record.name, email: record.email, cpfCnpj: record.cpfCnpj, userType: record.profile.name }),
+                                        setDataEdit({ id: record.id, name: record.name, email: record.email, cpfCnpj: record.cpfCnpj, userType: record.profile.name, stateAndCity: [record.state, record.city] }),
                                         showModal()
                                     ]} />
                                     <FaTrash onClick={() => handleDelete(record.id)} />
@@ -88,9 +100,9 @@ const User = () => {
                     ]} dataSource={users} />
                 </Spin>
             </Card>
-            {isModalOpen && (<UserModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} dataEdit={dataEdit} setDataEdit={setDataEdit} getUsers={getUsers} />)}
+            {isModalOpen && (<UserModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} dataEdit={dataEdit} setDataEdit={setDataEdit} getUsers={getUsers} isCityHall={true} />)}
         </>
     );
 };
 
-export default User;
+export default CityHall;

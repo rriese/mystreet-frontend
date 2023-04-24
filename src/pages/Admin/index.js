@@ -10,7 +10,7 @@ const AdminPage = () => {
             <Card title="Área Administrativa">
                 <Row gutter={16}>
                     <Col xs={24} xl={6} span={6}>
-                        <Card hoverable title="Gerir prefeituras" bordered={false} onClick={() => alert('Not implemented yet!')}>
+                        <Card hoverable title="Gerir prefeituras" bordered={false} onClick={() => navigate('/admin/cityhall')}>
                             Permite visualizar/cadastrar/editar prefeituras.
                         </Card>
                     </Col>

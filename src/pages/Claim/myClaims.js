@@ -91,7 +91,6 @@ const MyClaims = () => {
                                 <Space size="middle">
                                     <FaEdit onClick={() => [
                                         setDataEdit({id: record.id, title: record.title, description: record.description, district: record.district, stateAndCity: [record.state, record.city]}),
-                                        /*setDataEdit({ id: record.id, name: record.name, email: record.email, cpfCnpj: record.cpfCnpj, userType: record.profile.name }),*/
                                         showModal()
                                     ]} />
                                     <FaTrash onClick={() => handleDelete(record.id)} />
