@@ -19,6 +19,7 @@ const Signin = () => {
     setLoading(true);
     if (!email | !senha) {
       setError("Preencha todos os campos");
+      setLoading(false);
       return;
     }
 
