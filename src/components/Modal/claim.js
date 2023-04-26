@@ -71,11 +71,12 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                 });
 
                 if (serviceResponse.responseType === 'OK') {
-                    fileList.forEach(async (file) => {
+                    for await (const file of fileList) {
                         const formData = new FormData();
                         formData.append('image', file);
+                        
                         await ServiceBase.postRequestUpload(`api/image/${serviceResponse.content.id}/`, formData);
-                    });
+                    }
 
                     toast.success('Reclamação criada com sucesso!');
                     setIsModalOpen(false);
