@@ -4,7 +4,7 @@ import ServiceBase from '../../services/serviceBase';
 import { toast } from "react-toastify";
 
 const contentStyle = {
-    height: '400px',
+    height: '500px',
     color: '#fff',
     lineHeight: '160px',
     textAlign: 'center',
@@ -13,7 +13,7 @@ const contentStyle = {
 
 const carouselStyle = {
     borderRadius: '20px', overflow: 'hidden',
-    height: '400px',
+    height: '500px',
     background: 'teal',
 }
 
@@ -57,23 +57,24 @@ const Home = () => {
             <Card title="Reclamações" >
                 {
                     claims.length > 0 ?
-                        claims.map((item, i) => (
+                        claims.map((item) => (
                             <Card style={{ marginTop: 16 }} type="inner" title={item.title} extra={<div><b>Autor: {item.user.name}</b></div>}>
                                 {item.images.length > 0 ?
                                     <Carousel style={carouselStyle} autoplay>
                                         {
-                                            item.images.map((itemi, j) => (
+                                            item.images.map((image) => (
                                                 <div>
                                                     <h3 style={contentStyle}>
-                                                        <img alt="Teste" width="100%" height="100%" src={itemi} />
+                                                        <img alt="Teste" width="100%" height="100%" src={image} />
                                                     </h3>
                                                 </div>
                                             ))
                                         }
                                     </Carousel>
                                     :
-                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"Sem imagens"} />
                                 }
+                                <br />
                                 <div>
                                     {item.description}
                                 </div>

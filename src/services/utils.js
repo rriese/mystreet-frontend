@@ -5,7 +5,17 @@ class Utils {
         const userInfo = sessionStorage.getItem("user_info");
 
         if (userInfo) {
-            return(JSON.parse(userInfo).isAdmin);
+            return(JSON.parse(userInfo).userRole === 'ROLE_ADMIN');
+        }
+
+        return false;
+    }
+
+    static isVisitor = () => {
+        const userInfo = sessionStorage.getItem("user_info");
+
+        if (userInfo) {
+            return(JSON.parse(userInfo).userRole === 'ROLE_VISITOR');
         }
 
         return false;

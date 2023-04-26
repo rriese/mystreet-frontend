@@ -24,6 +24,7 @@ const Template = ({ content }) => {
   const navigate = useNavigate();
   const { signout } = useAuth();
   const userName = Utils.getUserName();
+  const isVisitor = Utils.isVisitor();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -62,7 +63,7 @@ const Template = ({ content }) => {
         }
       })
     }
-    if (!isAdmin) {
+    if (isVisitor) {
       options.push({
         key: 'my_claims',
         label: 'Minhas reclamações',
@@ -113,8 +114,8 @@ const Template = ({ content }) => {
             <Content style={{ padding: '0 24px', minHeight: 280 }}>{content}</Content>
           </Layout>
         </Content>
-        <FloatButton style={styles.floatbutton} icon={<PlusOutlined />} onClick={showModal} />
-        {isModalOpen && <ClaimModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />}
+        {isVisitor && <FloatButton style={styles.floatbutton} icon={<PlusOutlined />} onClick={showModal} />}
+        {isVisitor && isModalOpen && <ClaimModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />}
         <Footer style={{ textAlign: 'center' }}>MyStreet © 2023</Footer>
       </Layout>
     </>
