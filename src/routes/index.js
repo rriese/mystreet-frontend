@@ -19,7 +19,8 @@ const Private = ({ Item, Content }) => {
 
 const Admin = ({ Item, Content }) => {
   const isAdmin = Utils.isAdmin();
-  return isAdmin ? (Content ? <Item content={<Content />} /> : <Item />) : <Template content={<Home />} />;
+  const { signed } = useAuth();
+  return signed > 0 ? isAdmin ? (Content ? <Item content={<Content />} /> : <Item />) : <Template content={<Home />} /> : <Signin />;
 };
 
 const RoutesApp = () => {

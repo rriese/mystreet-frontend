@@ -16,9 +16,7 @@ const CityHall = () => {
             setLoading(true);
             let res = await ServiceBase.getRequest('api/user/cityhall');
             setUsers(res.content.sort((a, b) => (a.name > b.name ? 1 : -1)));
-        } catch (error) {
-            toast.error(error);
-        }
+        } catch (error) {}
         setLoading(false);
     };
 
@@ -34,8 +32,6 @@ const CityHall = () => {
             const newArray = users.filter((user) => user.id !== id);
             setUsers(newArray);
             toast.success("Prefeitura deletada com sucesso!");
-        } else {
-            toast.error('Erro ao deletar prefeitura');
         }
         setLoading(false);
     };

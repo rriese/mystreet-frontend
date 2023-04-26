@@ -16,9 +16,7 @@ const MyClaims = () => {
             setLoading(true);
             let res = await ServiceBase.getRequest('api/claim/myclaims');
             setClaims(res.content.sort((a, b) => (a.title > b.title ? 1 : -1)));
-        } catch (error) {
-            toast.error(error);
-        }
+        } catch (error) {}
         setLoading(false);
     };
 
@@ -34,8 +32,6 @@ const MyClaims = () => {
             const newArray = claims.filter((claim) => claim.id !== id);
             setClaims(newArray);
             toast.success("Reclamação deletada com sucesso!");
-        } else {
-            toast.error('Erro ao deletar reclamação');
         }
         setLoading(false);
     }

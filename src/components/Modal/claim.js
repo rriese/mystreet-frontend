@@ -55,8 +55,6 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                     toast.success('Reclamação atualizada com sucesso!');
                     setIsModalOpen(false);
                     getClaims();
-                } else {
-                    toast.error(serviceResponse.content);
                 }
                 setLoading(false);
             } else {
@@ -86,8 +84,6 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                     } else {
                         navigate('/home');
                     }
-                } else {
-                    toast.error(serviceResponse.content);
                 }
                 setLoading(false);
             }

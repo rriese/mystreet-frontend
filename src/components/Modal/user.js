@@ -63,8 +63,6 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
 
                 if (serviceResponse && serviceResponse.responseType === 'OK') {
                     toast.success('Usuário atualizado com sucesso!');
-                } else {
-                    toast.error(serviceResponse.content);
                 }
             } else {
                 let resource = userType === 'ROLE_CITY_HALL' ? 'api/admin/createcityhalluser' :
@@ -92,8 +90,6 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
 
                 if (serviceResponse && serviceResponse.responseType === 'OK') {
                     toast.success('Usuário criado com sucesso!');
-                } else {
-                    toast.error(serviceResponse.content);
                 }
             }
 

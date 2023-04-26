@@ -40,8 +40,6 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
 
       if (serviceResponse && serviceResponse.responseType === 'OK') {
         toast.success('Usuário atualizado com sucesso!');
-      } else {
-        toast.error(serviceResponse.content);
       }
     } else {
       let serviceResponse = await ServiceBase.postRequest('api/user/', {
@@ -51,8 +49,6 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
 
       if (serviceResponse && serviceResponse.responseType === 'OK') {
         toast.success('Usuário criado com sucesso!');
-      } else {
-        toast.error(serviceResponse.content);
       }
     }
 

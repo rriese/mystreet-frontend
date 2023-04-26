@@ -20,8 +20,6 @@ const Profile = () => {
             setName(serviceResponse.content.name);
             setEmail(serviceResponse.content.email);
             setCpfCnpj(serviceResponse.content.cpfCnpj);
-        } else {
-            toast.error(serviceResponse.content);
         }
         setLoading(false);
     }
@@ -43,8 +41,6 @@ const Profile = () => {
 
             if (serviceResponse && serviceResponse.responseType === 'OK') {
                 toast.success('Perfil atualizado com sucesso!');
-            } else {
-                toast.error(serviceResponse.content);
             }
         }
 

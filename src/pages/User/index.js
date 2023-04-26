@@ -16,9 +16,7 @@ const User = () => {
             setLoading(true);
             let res = await ServiceBase.getRequest('api/user/excludecityhall');
             setUsers(res.content.sort((a, b) => (a.name > b.name ? 1 : -1)));
-        } catch (error) {
-            toast.error(error);
-        }
+        } catch (error) {}
         setLoading(false);
     };
 
@@ -34,8 +32,6 @@ const User = () => {
             const newArray = users.filter((user) => user.id !== id);
             setUsers(newArray);
             toast.success("Usuário deletado com sucesso!");
-        } else {
-            toast.error('Erro ao deletar usuário');
         }
         setLoading(false);
     };

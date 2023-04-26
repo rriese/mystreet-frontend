@@ -1,7 +1,8 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const ENV = 'PRD';
-const BASE_URL = ENV === 'PRD' ?  'https://mystreet-backend.herokuapp.com/' : 'http://localhost:8080/';
+const BASE_URL = ENV === 'PRD' ? 'https://mystreet-backend.herokuapp.com/' : 'http://localhost:8080/';
 
 class ServiceBase {
     static getToken = () => {
@@ -24,9 +25,12 @@ class ServiceBase {
                 }
             })
             .catch(err => {
+                let errorMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message;
+                this.handleError(errorMessage);
+
                 response = {
                     responseType: 'ERROR',
-                    content: err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message
+                    content: errorMessage
                 }
             });
 
@@ -49,9 +53,12 @@ class ServiceBase {
                 }
             })
             .catch(err => {
+                let errorMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message;
+                this.handleError(errorMessage);
+
                 response = {
                     responseType: 'ERROR',
-                    content: err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message
+                    content: errorMessage
                 }
             });
 
@@ -78,13 +85,16 @@ class ServiceBase {
                 }
             })
             .catch(err => {
+                let errorMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message;
+                this.handleError(errorMessage);
+
                 response = {
                     responseType: 'ERROR',
-                    content: err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message
+                    content: errorMessage
                 }
             });
-        
-            return response;
+
+        return response;
     }
     static postRequest = async (resource, body) => {
         let response;
@@ -106,13 +116,16 @@ class ServiceBase {
                 }
             })
             .catch(err => {
+                let errorMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message;
+                this.handleError(errorMessage);
+
                 response = {
                     responseType: 'ERROR',
-                    content: err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message
+                    content: errorMessage
                 }
             });
-        
-            return response;
+
+        return response;
     }
     static putRequest = async (resource, body) => {
         let response;
@@ -134,13 +147,16 @@ class ServiceBase {
                 }
             })
             .catch(err => {
+                let errorMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message;
+                this.handleError(errorMessage);
+
                 response = {
                     responseType: 'ERROR',
-                    content: err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message
+                    content: errorMessage
                 }
             });
-        
-            return response;
+
+        return response;
     }
     static deleteRequest = async (resource) => {
         let response;
@@ -158,13 +174,31 @@ class ServiceBase {
                 }
             })
             .catch(err => {
+                let errorMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message;
+                this.handleError(errorMessage);
+
                 response = {
                     responseType: 'ERROR',
-                    content: err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message
+                    content: errorMessage
                 }
             });
 
         return response;
+    }
+    static handleError = (err) => {
+        //Reiniciou o backend ou token expirou, necessário logar novamente para re-gerar o token
+        if (err.includes('HmacSHA512') || err.includes('The Token has expired')) {
+            sessionStorage.removeItem("user_token");
+            sessionStorage.removeItem("user_info");
+
+            toast.warning('Sessão encerrada, redirecionando para a página de login!');
+
+            setTimeout(() => {
+                document.location.reload();
+            }, "3000");
+        } else {
+            toast.error(err);
+        }
     }
 }
 
