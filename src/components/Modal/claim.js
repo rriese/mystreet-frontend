@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Input, Cascader, Spin, Upload, Button, Divider } from 'antd';
+import { Modal, Input, Cascader, Spin, Upload, Button } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -33,15 +33,6 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
     };
 
     const handleOk = async () => {
-        // alert('Vamos testar o upload!');
-
-        // const formData = new FormData();
-        // fileList.forEach((file) => {
-        //     formData.append('files[]', file);
-        // });
-
-        // let serviceResponse = await ServiceBase.postRequest('api/image/643ddcbacd5875259347636c/', formData);
-
         if (!title ||
             !description ||
             !stateAndCity[0] ||
@@ -80,6 +71,12 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                 });
 
                 if (serviceResponse.responseType === 'OK') {
+                    fileList.forEach(async (file) => {
+                        const formData = new FormData();
+                        formData.append('image', file);
+                        await ServiceBase.postRequestUpload(`api/image/${serviceResponse.content.id}/`, formData);
+                    });
+
                     toast.success('Reclamação criada com sucesso!');
                     setIsModalOpen(false);
 
@@ -97,8 +94,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
     };
 
     const uploaderProps = {
-        // multiple: true,
-        // maxCount: 3,
+        multiple: true,
 
         onRemove: (file) => {
             const index = fileList.indexOf(file);
@@ -108,8 +104,11 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
         },
 
         beforeUpload: (file) => {
-            alert("BEFORE");
-            setFileList([...fileList, file]);
+            let fileListOld = fileList;
+            if (fileListOld.length < 3) {
+                fileListOld.push(file);
+                setFileList(fileListOld);
+            }
             return false;
         },
         fileList

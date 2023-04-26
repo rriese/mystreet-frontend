@@ -24,7 +24,23 @@ const Home = () => {
     const getClaims = async () => {
         try {
             setLoading(true);
+
             let res = await ServiceBase.getRequest('api/claim/');
+
+            for (let i of res.content) {
+                let images = await ServiceBase.getRequest('api/image/' + i.id);
+                if (images && images.responseType === 'OK') {
+                    let imageData = [];
+                    for (let j of images.content) {
+                        let img = await ServiceBase.getRequestImage('api/image/' + i.id + '/' + j);
+
+                        if (img && img.responseType === 'OK') {
+                            imageData.push(URL.createObjectURL(img.content));
+                        }
+                    }
+                    i.images = imageData;
+                }
+            }
             setClaims(res.content.sort((a, b) => (a.title > b.title ? 1 : -1)));
         } catch (error) {
             toast.error(error);
@@ -43,15 +59,21 @@ const Home = () => {
                     claims.length > 0 ?
                         claims.map((item, i) => (
                             <Card style={{ marginTop: 16 }} type="inner" title={item.title} extra={<div><b>Autor: {item.user.name}</b></div>}>
-                                <Carousel style={carouselStyle} autoplay>
-                                    <div>
-                                        <h3 style={contentStyle}><img alt="Teste" width="100%" height="100%"
-                                            src="https://gluby.com.br/storage/uploads/blog/posts/20230126_07295643357.png"
-                                        /></h3>
-                                    </div>
-                                </Carousel>
-                                &nbsp;
-                                {/* <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> */}
+                                {item.images.length > 0 ?
+                                    <Carousel style={carouselStyle} autoplay>
+                                        {
+                                            item.images.map((itemi, j) => (
+                                                <div>
+                                                    <h3 style={contentStyle}>
+                                                        <img alt="Teste" width="100%" height="100%" src={itemi} />
+                                                    </h3>
+                                                </div>
+                                            ))
+                                        }
+                                    </Carousel>
+                                    :
+                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                                }
                                 <div>
                                     {item.description}
                                 </div>

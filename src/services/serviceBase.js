@@ -32,6 +32,60 @@ class ServiceBase {
 
         return response;
     }
+    static getRequestImage = async (resource) => {
+        let response;
+
+        await axios
+            .get(`${BASE_URL}${resource}`, {
+                responseType: 'blob',
+                headers: {
+                    'Authorization': `Bearer ${ServiceBase.getToken()}`
+                }
+            })
+            .then(data => {
+                response = {
+                    responseType: 'OK',
+                    content: data.data
+                }
+            })
+            .catch(err => {
+                response = {
+                    responseType: 'ERROR',
+                    content: err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message
+                }
+            });
+
+        return response;
+    }
+    static postRequestUpload = async (resource, body) => {
+        let response;
+        let token = ServiceBase.getToken();
+        let headers = {};
+
+        if (token) {
+            headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+
+        await axios
+            .post(`${BASE_URL}${resource}`, body, { headers })
+            .then(data => {
+                response = {
+                    responseType: 'OK',
+                    content: data.data
+                }
+            })
+            .catch(err => {
+                response = {
+                    responseType: 'ERROR',
+                    content: err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message
+                }
+            });
+        
+            return response;
+    }
     static postRequest = async (resource, body) => {
         let response;
         let token = ServiceBase.getToken();
