@@ -35,7 +35,7 @@ const Signin = () => {
   };
 
   return (
-    <C.Container>
+    <C.Container style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/img/fundo.jpg'})`, backgroundRepeat: "no-repeat", backgroundSize: "100% 100%"}}>
       <Spin spinning={loading} size="large">
         <C.Label>MYSTREET</C.Label>
         <C.Content>
