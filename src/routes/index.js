@@ -17,10 +17,16 @@ const Private = ({ Item, Content }) => {
   return signed > 0 ? (Content ? <Item content={<Content />} /> : <Item />) : <Signin />;
 };
 
-const Admin = ({ Item, Content }) => {
+const AdminAllowed = ({ Item, Content }) => {
   const isAdmin = Utils.isAdmin();
   const { signed } = useAuth();
   return signed > 0 ? isAdmin ? (Content ? <Item content={<Content />} /> : <Item />) : <Template content={<Home />} /> : <Signin />;
+};
+
+const VisitorAllowed = ({ Item, Content }) => {
+  const isUser = Utils.isVisitor();
+  const { signed } = useAuth();
+  return signed > 0 ? isUser ? (Content ? <Item content={<Content />} /> : <Item />) : <Template content={<Home />} /> : <Signin />;
 };
 
 const RoutesApp = () => {
@@ -28,12 +34,12 @@ const RoutesApp = () => {
     <BrowserRouter>
       <Fragment>
         <Routes>
-          <Route exact path="/admin" element={<Admin Item={Template} Content={AdminPage} />} />
-          <Route exact path="/admin/user" element={<Admin Item={Template} Content={User} />} />
-          <Route exact path="/admin/cityhall" element={<Admin Item={Template} Content={CityHall} />} />
+          <Route exact path="/admin" element={<AdminAllowed Item={Template} Content={AdminPage} />} />
+          <Route exact path="/admin/user" element={<AdminAllowed Item={Template} Content={User} />} />
+          <Route exact path="/admin/cityhall" element={<AdminAllowed Item={Template} Content={CityHall} />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />
-          <Route exact path="/myclaims" element={<Private Item={Template} Content={MyClaims} />} />
+          <Route exact path="/myclaims" element={<VisitorAllowed Item={Template} Content={MyClaims} />} />
           <Route exact path="/profile" element={<Private Item={Template} Content={Profile} />} />
           <Route path="*" element={<Signin />} />
         </Routes>

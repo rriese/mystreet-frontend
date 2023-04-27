@@ -80,7 +80,7 @@ const Home = () => {
                                 </div>
                             </Card>
                         ))
-                        : <Empty />
+                        : <Empty description={"Sem reclamações"} />
                 }
             </Card >
         </Spin>
