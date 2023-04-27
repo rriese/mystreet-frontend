@@ -127,7 +127,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                 <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="Bairro" />
                 &nbsp;
                 <div>
-                    <Upload {...uploaderProps}>
+                    <Upload {...uploaderProps} accept="image/png, image/jpeg">
                         <Button icon={<UploadOutlined />}>Anexar imagens</Button>
                     </Upload>
                 </div>

@@ -24,8 +24,7 @@ export const Content = styled.div`
 `;
 
 export const Label = styled.label`
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 25px;
   color: white;
 `;
 
