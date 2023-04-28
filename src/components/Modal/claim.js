@@ -16,6 +16,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
     const [district, setDistrict] = useState((dataEdit && dataEdit.district) || "");
     const [loading, setLoading] = useState(false);
     const [stateAndCity, setStateAndCity] = useState((dataEdit && dataEdit.stateAndCity) || []);
+    const [images, setImages] = useState((dataEdit && dataEdit.images) || []);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -31,6 +32,18 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
         clearInputFields();
         setIsModalOpen(false);
     };
+
+    const deleteImage = async (id) => {
+        setLoading(true);
+
+        let serviceResponse = await ServiceBase.deleteRequest('api/image/' + id);
+
+        if (serviceResponse && serviceResponse.responseType === 'OK') {
+            toast.success('Imagem deletada com sucesso!');
+            setImages(images.filter(x => x !== id));
+        }
+        setLoading(false);
+    }
 
     const handleOk = async () => {
         if (!title ||
@@ -52,6 +65,13 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                 });
 
                 if (serviceResponse.responseType === 'OK') {
+                    for await (const file of fileList) {
+                        const formData = new FormData();
+                        formData.append('image', file);
+                        
+                        await ServiceBase.postRequestUpload(`api/image/${serviceResponse.content.id}/`, formData);
+                    }
+
                     toast.success('Reclamação atualizada com sucesso!');
                     setIsModalOpen(false);
                     getClaims();
@@ -125,6 +145,14 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                 </span>
                 &nbsp;
                 <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="Bairro" />
+                &nbsp;
+                {
+                    images.map((item, i) => (
+                        <>
+                        <div><a href="javascript:void(0);" onClick={() =>deleteImage(item)}>Deletar imagem {i + 1}</a></div> 
+                        </>
+                    ))
+                }
                 &nbsp;
                 <div>
                     <Upload {...uploaderProps} accept="image/png, image/jpeg">

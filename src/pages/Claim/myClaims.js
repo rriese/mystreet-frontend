@@ -15,6 +15,11 @@ const MyClaims = () => {
         try {
             setLoading(true);
             let res = await ServiceBase.getRequest('api/claim/myclaims');
+
+            for (let i of res.content) {
+                let images = await ServiceBase.getRequest('api/image/' + i.id);
+                i.images = images.content;
+            }
             setClaims(res.content.sort((a, b) => (a.title > b.title ? 1 : -1)));
         } catch (error) {}
         setLoading(false);
@@ -86,7 +91,7 @@ const MyClaims = () => {
                             render: (_, record) => (
                                 <Space size="middle">
                                     <FaEdit onClick={() => [
-                                        setDataEdit({id: record.id, title: record.title, description: record.description, district: record.district, stateAndCity: [record.state, record.city]}),
+                                        setDataEdit({id: record.id, title: record.title, description: record.description, district: record.district, stateAndCity: [record.state, record.city], images: record.images}),
                                         showModal()
                                     ]} />
                                     <FaTrash onClick={() => handleDelete(record.id)} />
