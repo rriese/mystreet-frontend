@@ -11,6 +11,7 @@ import Utils from "../services/utils";
 import MyClaims from "../pages/Claim/myClaims";
 import Profile from "../pages/User/profile";
 import CityHall from "../pages/CityHall";
+import Details from "../pages/Claim/details";
 
 const Private = ({ Item, Content }) => {
   const { signed } = useAuth();
@@ -41,6 +42,7 @@ const RoutesApp = () => {
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />
           <Route exact path="/myclaims" element={<VisitorAllowed Item={Template} Content={MyClaims} />} />
           <Route exact path="/profile" element={<Private Item={Template} Content={Profile} />} />
+          <Route exact path="/claim/:id" element={<Private Item={Template} Content={Details} />} />
           <Route path="*" element={<Signin />} />
         </Routes>
       </Fragment>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Carousel, Empty, Spin } from 'antd';
 import ServiceBase from '../../services/serviceBase';
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const contentStyle = {
     height: '500px',
@@ -18,6 +19,7 @@ const carouselStyle = {
 }
 
 const Home = () => {
+    const navigate = useNavigate();
     const [claims, setClaims] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -58,7 +60,7 @@ const Home = () => {
                 {
                     claims.length > 0 ?
                         claims.map((item) => (
-                            <Card style={{ marginTop: 16 }} type="inner" title={item.title} extra={<div><b>Autor: {item.user.name}</b></div>}>
+                            <Card onClick={() => navigate('/claim/' + item.id)} style={{ marginTop: 16 }} type="inner" title={item.title} extra={<div><b>Autor: {item.user.name}</b></div>}>
                                 {item.images.length > 0 ?
                                     <Carousel style={carouselStyle} autoplay>
                                         {
