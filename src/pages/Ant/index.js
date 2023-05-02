@@ -97,7 +97,7 @@ const Template = ({ content }) => {
             <Menu.Item onClick={() => navigate('/home')} >
               <h3 style={{color: 'white'}}>MyStreet</h3>
             </Menu.Item>
-            <Menu.Item style={{ marginLeft: 'auto', pointerEvents: 'none', color: 'white' }} >
+            <Menu.Item style={{ marginLeft: 'auto', /*pointerEvents: 'none',*/ color: 'white' }} >
               {userName && 'Bem vindo(a) ' + userName + '!' }
             </Menu.Item>
           </Menu>

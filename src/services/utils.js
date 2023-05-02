@@ -31,6 +31,16 @@ class Utils {
         return '';
     }
 
+    static getUserEmail = () => {
+        const userToken = sessionStorage.getItem("user_token");
+
+        if (userToken) {
+            return (JSON.parse(userToken).email);
+        }
+        
+        return '';
+    }
+
     static availableStatesAndCities = () => {
         return [
             {
