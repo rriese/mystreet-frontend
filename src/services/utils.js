@@ -1,5 +1,3 @@
-import ServiceBase from "./serviceBase";
-
 class Utils {
     static isAdmin = () => {
         const userInfo = sessionStorage.getItem("user_info");
@@ -37,7 +35,7 @@ class Utils {
         if (userToken) {
             return (JSON.parse(userToken).email);
         }
-        
+
         return '';
     }
 
