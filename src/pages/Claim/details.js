@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Carousel, Empty, Spin, Button, Result } from 'antd';
+import { Card, Carousel, Empty, Spin, Button, Result, Form, Input, List } from 'antd';
+import { Comment } from '@ant-design/compatible';
 import { useParams } from 'react-router-dom'
 import ServiceBase from '../../services/serviceBase';
 import Utils from '../../services/utils';
+import { toast } from "react-toastify";
+
+const { TextArea } = Input;
 
 const contentStyle = {
     height: '500px',
@@ -18,21 +22,55 @@ const carouselStyle = {
     background: 'teal',
 }
 
+const CommentList = ({ comments }) => (
+    <List
+        dataSource={comments}
+        header={`${comments.length} ${comments.length > 1 ? 'comentários' : 'comentário'}`}
+        itemLayout="horizontal"
+        renderItem={props => <Comment {...props} />}
+    />
+);
+
+const Editor = ({ onChange, onSubmit, submitting, value }) => (
+    <>
+        <Form.Item>
+            <TextArea rows={4} onChange={onChange} value={value} />
+        </Form.Item>
+        <Form.Item>
+            <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
+                Comentar
+            </Button>
+        </Form.Item>
+    </>
+);
+
 const Details = () => {
     let { id } = useParams();
     const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [claimData, setClaimData] = useState({});
     const [likes, setLikes] = useState([]);
     const [liked, setLiked] = useState(false);
     const [resolution, setResolution] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [comment, setComment] = useState(null);
 
     const initialize = async () => {
         setLoading(true);
         await getClaimData();
         await getLikes();
         await getResolution();
+        await getComments();
         setLoading(false);
     }
+
+    const actions = (id, userEmail) => [
+        <>
+            {Utils.getUserEmail() === userEmail && <span onClick={() => deleteComment(id)}>
+                <span className="comment-action"><b>Deletar</b></span>
+            </span>}
+        </>
+    ];
 
     const getClaimData = async () => {
         let serviceResponse = await ServiceBase.getRequest('api/claim/' + id);
@@ -95,6 +133,50 @@ const Details = () => {
         }
     }
 
+    const getComments = async () => {
+        let serviceResponse = await ServiceBase.getRequest('api/comment/' + id);
+        if (serviceResponse && serviceResponse.responseType === 'OK') {
+            let result = [];
+            for (let comment of serviceResponse.content) {
+                result.push({
+                    author: comment.user.name,
+                    content: <p>{comment.description}</p>,
+                    datetime: new Date(comment.createdAt).toLocaleString(),
+                    actions: actions(comment.id, comment.user.email)
+                });
+            }
+            setComments(result);
+        }
+    }
+
+    const handleSubmit = async () => {
+        if (!comment) return;
+
+        setSubmitting(true);
+
+        let serviceResponse = await ServiceBase.postRequest('api/comment/' + id, {
+            description: comment
+        });
+
+        if (serviceResponse && serviceResponse.responseType === 'OK') {
+            setComment(null);
+            toast.success('Comentário adicionado com sucesso!');
+            await getComments();
+        }
+        setSubmitting(false);
+    }
+
+    const deleteComment = async (id) => {
+        setLoading(true);
+        let serviceResponse = await ServiceBase.deleteRequest('api/comment/' + id);
+
+        if (serviceResponse && serviceResponse.responseType === 'OK') {
+            toast.success('Comentário deletado com sucesso!');
+            await getComments();
+        }
+        setLoading(false);
+    }
+
     useEffect(() => {
         initialize();
     }, []);
@@ -103,7 +185,7 @@ const Details = () => {
 
         <Spin spinning={loading} size="large">
             {claimData.title ?
-                <Card title={"Detalhes da reclamação (#" + id + ")"}>
+                <Card title={"Detalhes da reclamação"}>
                     <Card style={{ marginTop: 16 }} type="inner" title={"Teste"} extra={<div><b>Autor: Teste</b></div>}>
                         {claimData.images.length > 0 ?
                             <Carousel style={carouselStyle} autoplay>
@@ -144,6 +226,18 @@ const Details = () => {
                             <br />
                             Bairro: {claimData.district}
                         </b>
+                        <hr />
+                        {comments.length > 0 && <CommentList comments={comments} />}
+                        <Comment
+                            content={
+                                <Editor
+                                    onChange={(e) => setComment(e.target.value)}
+                                    onSubmit={handleSubmit}
+                                    submitting={submitting}
+                                    value={comment}
+                                />
+                            }
+                        />
                     </Card>
                 </Card>
                 : !loading && <Result
