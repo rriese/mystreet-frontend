@@ -64,12 +64,10 @@ const Details = () => {
         setLoading(false);
     }
 
-    const actions = (id, userEmail) => [
-        <>
-            {Utils.getUserEmail() === userEmail && <span onClick={() => deleteComment(id)}>
-                <span className="comment-action"><b>Deletar</b></span>
-            </span>}
-        </>
+    const actions = (id) => [
+        <span onClick={() => deleteComment(id)}>
+            <span className="comment-action"><b>Deletar</b></span>
+        </span>
     ];
 
     const getClaimData = async () => {
@@ -138,12 +136,17 @@ const Details = () => {
         if (serviceResponse && serviceResponse.responseType === 'OK') {
             let result = [];
             for (let comment of serviceResponse.content) {
-                result.push({
+                let obj = {
                     author: comment.user.name,
                     content: <p>{comment.description}</p>,
-                    datetime: new Date(comment.createdAt).toLocaleString(),
-                    actions: actions(comment.id, comment.user.email)
-                });
+                    datetime: new Date(comment.createdAt).toLocaleString()
+                };
+
+                if (Utils.getUserEmail() === comment.user.email) {
+                    obj.actions = actions(comment.id)
+                }
+
+                result.push(obj);
             }
             setComments(result);
         }
@@ -226,7 +229,7 @@ const Details = () => {
                             <br />
                             Bairro: {claimData.district}
                         </b>
-                        <hr />
+
                         {comments.length > 0 && <CommentList comments={comments} />}
                         <Comment
                             content={
