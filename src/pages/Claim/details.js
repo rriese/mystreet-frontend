@@ -126,7 +126,7 @@ const Details = () => {
                         </Button>
                         &nbsp;&nbsp; {likes.length} curtida(s)
                         <span style={{ float: 'right' }}>
-                            <b>Status: {claimData.status.name}</b>
+                            <b>Status: {claimData.status && claimData.status.name ? claimData.status.name : "Pendente"}</b>
                         </span>
                         <br />
                         <br />
