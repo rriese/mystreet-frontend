@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaTrash, FaEdit, FaClock, FaCheck } from "react-icons/fa";
-import { Space, Table, Spin, Button, Card, Tooltip } from 'antd';
+import { Space, Spin, Card, Tooltip } from 'antd';
+import { Table } from 'ant-table-extensions';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 import ClaimModal from "../../components/Modal/claim";
@@ -98,7 +99,7 @@ const MyClaims = () => {
                                 </Space>
                             ),
                         },
-                    ]} dataSource={claims} />
+                    ]} dataSource={claims} exportableProps={{ showColumnPicker: true }} searchable />
                 </Spin>
             </Card>
             {isModalOpen && <ClaimModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} dataEdit={dataEdit} getClaims={getClaims} />}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import { Space, Table, Spin, Button, Card } from 'antd';
+import { Space, Spin, Button, Card } from 'antd';
+import { Table } from 'ant-table-extensions';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 import UserModal from "../../components/Modal/user";
@@ -93,7 +94,7 @@ const CityHall = () => {
                                 </Space>
                             ),
                         },
-                    ]} dataSource={users} />
+                    ]} dataSource={users} exportableProps={{ showColumnPicker: true }} searchable />
                 </Spin>
             </Card>
             {isModalOpen && (<UserModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} dataEdit={dataEdit} setDataEdit={setDataEdit} getUsers={getUsers} isCityHall={true} />)}
