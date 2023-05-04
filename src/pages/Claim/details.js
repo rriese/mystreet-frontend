@@ -47,6 +47,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 const Details = () => {
     let { id } = useParams();
     const [loading, setLoading] = useState(false);
+    const [loadingComment, setLoadingComment] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [claimData, setClaimData] = useState({});
     const [likes, setLikes] = useState([]);
@@ -57,10 +58,10 @@ const Details = () => {
 
     const initialize = async () => {
         setLoading(true);
+        getComments();
         await getClaimData();
         await getLikes();
         await getResolution();
-        await getComments();
         setLoading(false);
     }
 
@@ -132,6 +133,7 @@ const Details = () => {
     }
 
     const getComments = async () => {
+        setLoadingComment(true);
         let serviceResponse = await ServiceBase.getRequest('api/comment/' + id);
         if (serviceResponse && serviceResponse.responseType === 'OK') {
             let result = [];
@@ -150,9 +152,10 @@ const Details = () => {
             }
             setComments(result);
         }
+        setLoadingComment(false);
     }
 
-    const handleSubmit = async () => {
+    const saveComment = async () => {
         if (!comment) return;
 
         setSubmitting(true);
@@ -170,14 +173,14 @@ const Details = () => {
     }
 
     const deleteComment = async (id) => {
-        setLoading(true);
+        setLoadingComment(true);
         let serviceResponse = await ServiceBase.deleteRequest('api/comment/' + id);
 
         if (serviceResponse && serviceResponse.responseType === 'OK') {
             toast.success('Comentário deletado com sucesso!');
             await getComments();
         }
-        setLoading(false);
+        setLoadingComment(false);
     }
 
     useEffect(() => {
@@ -185,7 +188,6 @@ const Details = () => {
     }, []);
 
     return (
-
         <Spin spinning={loading} size="large">
             {claimData.title ?
                 <Card title={"Detalhes da reclamação"}>
@@ -230,17 +232,19 @@ const Details = () => {
                             Bairro: {claimData.district}
                         </b>
 
-                        {comments.length > 0 && <CommentList comments={comments} />}
-                        <Comment
-                            content={
-                                <Editor
-                                    onChange={(e) => setComment(e.target.value)}
-                                    onSubmit={handleSubmit}
-                                    submitting={submitting}
-                                    value={comment}
-                                />
-                            }
-                        />
+                        <Spin spinning={loadingComment} size="large">
+                            {comments.length > 0 && <CommentList comments={comments} />}
+                            <Comment
+                                content={
+                                    <Editor
+                                        onChange={(e) => setComment(e.target.value)}
+                                        onSubmit={saveComment}
+                                        submitting={submitting}
+                                        value={comment}
+                                    />
+                                }
+                            />
+                        </Spin>
                     </Card>
                 </Card>
                 : !loading && <Result
