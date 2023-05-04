@@ -220,8 +220,9 @@ const Details = () => {
                         <div>
                             {claimData.description}
                         </div>
+                        <br />
                         <div>
-                            <center><b>Solução: {resolution ? resolution : 'Aguardando prefeitura'}</b></center>
+                            <b>Solução: {resolution ? resolution : 'Aguardando prefeitura'}</b>
                         </div>
                         <br />
                         <b>
