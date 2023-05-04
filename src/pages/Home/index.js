@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Carousel, Empty, Spin } from 'antd';
+import { Card, Carousel, Empty, Spin, Button } from 'antd';
 import ServiceBase from '../../services/serviceBase';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,7 @@ const Home = () => {
         try {
             setLoading(true);
 
-            let res = await ServiceBase.getRequest('api/claim/');
+            let res = await ServiceBase.getRequest('api/claim/cityhallclaims');
 
             for (let i of res.content) {
                 let images = await ServiceBase.getRequest('api/image/' + i.id);
@@ -80,6 +80,11 @@ const Home = () => {
                                 <div>
                                     {item.description}
                                 </div>
+                                <span style={{ float: 'right' }}>
+                                    <Button type="primary" size='small' onClick={(e) => {e.stopPropagation(); alert('Vamos resolver em breve!')}}>
+                                        Resolver
+                                    </Button>
+                                </span>
                             </Card>
                         ))
                         : <Empty description={"Sem reclamações"} />
