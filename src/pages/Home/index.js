@@ -102,13 +102,13 @@ const Home = () => {
                                 </div>
                                 {isCityHall &&
                                     <span style={{ float: 'right' }}>
-                                        <Button type="primary" size='small' onClick={(e) => { e.stopPropagation(); setDataEdit({ claimId: item.id, description: item.description }); showModal(); }}>
+                                        <Button type="default" size='small' onClick={(e) => { e.stopPropagation(); setDataEdit({ claimId: item.id, description: item.description }); showModal(); }}>
                                             {item.status && item.status.name === 'Concluído' ? 'Atualizar resolução' : 'Resolver'}
                                         </Button>
                                         {item.status && item.status.name === 'Concluído' &&
                                             <>
                                                 &nbsp;
-                                                <Button type="primary" size='small' onClick={(e) => { e.stopPropagation(); deleteResolution(item.id)}}>
+                                                <Button type="default" size='small' onClick={(e) => { e.stopPropagation(); deleteResolution(item.id)}}>
                                                     Apagar resolução
                                                 </Button>
                                             </>
