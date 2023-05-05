@@ -19,6 +19,16 @@ class Utils {
         return false;
     }
 
+    static isCityHall = () => {
+        const userInfo = sessionStorage.getItem("user_info");
+
+        if (userInfo) {
+            return(JSON.parse(userInfo).userRole === 'ROLE_CITY_HALL');
+        }
+
+        return false;
+    }
+
     static getUserName = () => {
         const userInfo = sessionStorage.getItem("user_info");
 

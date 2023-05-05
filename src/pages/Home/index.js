@@ -3,6 +3,8 @@ import { Card, Carousel, Empty, Spin, Button } from 'antd';
 import ServiceBase from '../../services/serviceBase';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Utils from '../../services/utils';
+import ResolutionModal from '../../components/Modal/resolution';
 
 const contentStyle = {
     height: '500px',
@@ -20,8 +22,15 @@ const carouselStyle = {
 
 const Home = () => {
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [claims, setClaims] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [dataEdit, setDataEdit] = useState([{}]);
+    const isCityHall = Utils.isCityHall();
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
 
     const getClaims = async () => {
         try {
@@ -80,14 +89,19 @@ const Home = () => {
                                 <div>
                                     {item.description}
                                 </div>
-                                <span style={{ float: 'right' }}>
-                                    <Button type="primary" size='small' onClick={(e) => {e.stopPropagation(); alert('Vamos resolver em breve!')}}>
-                                        Resolver
-                                    </Button>
-                                </span>
+                                {isCityHall &&
+                                    <span style={{ float: 'right' }}>
+                                        <Button type="primary" size='small' onClick={(e) => { e.stopPropagation(); setDataEdit({claimId: item.id, description: item.description}); showModal(); }}>
+                                            {item.status && item.status.name === 'Concluído' ? 'Atualizar resolução' : 'Resolver'}
+                                        </Button>
+                                    </span>
+                                }
                             </Card>
                         ))
                         : <Empty description={"Sem reclamações"} />
+                }
+                {
+                    isCityHall && isModalOpen && <ResolutionModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} dataEdit={dataEdit} />
                 }
             </Card >
         </Spin>
