@@ -1,13 +1,14 @@
-import { Modal, Input, Spin, Button } from 'antd';
-import { useState } from 'react';
+import { Modal, Input, Spin } from 'antd';
+import { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import ServiceBase from '../../services/serviceBase';
 
 const { TextArea } = Input;
 
-const ResolutionModal = ({ isModalOpen, setIsModalOpen, dataEdit }) => {
+const ResolutionModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
+    const [loading, setLoading] = useState(false);
     const [id, setId] = useState('');
-    const [claidId, setClaimId] = useState(dataEdit && dataEdit.claimId || '');
+    const [claimId, setClaimId] = useState(dataEdit && dataEdit.claimId || '');
     const [claim, setClaim] = useState(dataEdit && dataEdit.description || '');
     const [resolution, setResolution] = useState('');
 
@@ -16,29 +17,63 @@ const ResolutionModal = ({ isModalOpen, setIsModalOpen, dataEdit }) => {
     };
 
     const handleOk = async () => {
+        setLoading(true);
+
         if (!resolution ||
             !claim ||
-            !claidId) {
+            !claimId) {
             toast.warn("Preencha todos os campos!");
         } else {
-            let serviceResponse = await ServiceBase.postRequest('api/resolution/' + claidId, {
-                description: resolution
-            });
+            if (id) {
+                let serviceResponse = await ServiceBase.putRequest('api/resolution/', {
+                    id: id,
+                    description: resolution
+                });
 
-            if (serviceResponse && serviceResponse.responseType === 'OK') {
-                toast.success('Resolução cadastrada com sucesso!');
+                if (serviceResponse && serviceResponse.responseType === 'OK') {
+                    toast.success('Resolução atualizada com sucesso!');
+                    getClaims();
+                }
+            } else {
+                let serviceResponse = await ServiceBase.postRequest('api/resolution/' + claimId, {
+                    description: resolution
+                });
+
+                if (serviceResponse && serviceResponse.responseType === 'OK') {
+                    toast.success('Resolução cadastrada com sucesso!');
+                    getClaims();
+                }
             }
+            setIsModalOpen(false);
         }
+        setLoading(false);
     }
+
+    const getResolutionData = async () => {
+        setLoading(true);
+        let serviceResponse = await ServiceBase.getRequest('api/resolution/' + claimId);
+
+        if (serviceResponse && serviceResponse.responseType === 'OK') {
+            setId(serviceResponse.content.id);
+            setResolution(serviceResponse.content.description);
+        }
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        getResolutionData();
+    }, []);
 
     return (
         <Modal title="Resolução" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Input type="hidden" value={id} />
-            <Input value={claidId} disabled placeholder='Id da reclamação' />
-            &nbsp;
-            <TextArea rows={4} onChange={(e) => setClaim(e.target.value)} value={claim} placeholder='Reclamação' readOnly />
-            &nbsp;
-            <TextArea rows={4} onChange={(e) => setResolution(e.target.value)} value={resolution} placeholder='Resolução' />
+            <Spin spinning={loading} size="large">
+                <Input type="hidden" value={id} />
+                <Input value={claimId} disabled placeholder='Id da reclamação' />
+                &nbsp;
+                <TextArea rows={4} onChange={(e) => setClaim(e.target.value)} value={claim} placeholder='Reclamação' readOnly />
+                &nbsp;
+                <TextArea rows={4} onChange={(e) => setResolution(e.target.value)} value={resolution} placeholder='Resolução' />
+            </Spin>
         </Modal>
     )
 }

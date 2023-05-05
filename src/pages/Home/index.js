@@ -32,6 +32,17 @@ const Home = () => {
         setIsModalOpen(true);
     };
 
+    const deleteResolution = async (claimId) => {
+        setLoading(true);
+        let serviceResponse = await ServiceBase.deleteRequest('api/resolution/' + claimId);
+
+        if (serviceResponse && serviceResponse.responseType === 'OK') {
+            toast.success('Resolução deletada com sucesso!');
+            await getClaims();
+        }
+        setLoading(false);
+    }
+
     const getClaims = async () => {
         try {
             setLoading(true);
@@ -91,9 +102,17 @@ const Home = () => {
                                 </div>
                                 {isCityHall &&
                                     <span style={{ float: 'right' }}>
-                                        <Button type="primary" size='small' onClick={(e) => { e.stopPropagation(); setDataEdit({claimId: item.id, description: item.description}); showModal(); }}>
+                                        <Button type="primary" size='small' onClick={(e) => { e.stopPropagation(); setDataEdit({ claimId: item.id, description: item.description }); showModal(); }}>
                                             {item.status && item.status.name === 'Concluído' ? 'Atualizar resolução' : 'Resolver'}
                                         </Button>
+                                        {item.status && item.status.name === 'Concluído' &&
+                                            <>
+                                                &nbsp;
+                                                <Button type="primary" size='small' onClick={(e) => { e.stopPropagation(); deleteResolution(item.id)}}>
+                                                    Apagar resolução
+                                                </Button>
+                                            </>
+                                        }
                                     </span>
                                 }
                             </Card>
@@ -101,7 +120,7 @@ const Home = () => {
                         : <Empty description={"Sem reclamações"} />
                 }
                 {
-                    isCityHall && isModalOpen && <ResolutionModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} dataEdit={dataEdit} />
+                    isCityHall && isModalOpen && <ResolutionModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} dataEdit={dataEdit} getClaims={getClaims} />
                 }
             </Card >
         </Spin>
