@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Carousel, Empty, Spin, Button } from 'antd';
+import { Card, Carousel, Empty, Spin, Button, Image } from 'antd';
 import ServiceBase from '../../services/serviceBase';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Utils from '../../services/utils';
 import ResolutionModal from '../../components/Modal/resolution';
-
-const contentStyle = {
-    height: '500px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    background: '#364d79',
-};
 
 const carouselStyle = {
     borderRadius: '20px', overflow: 'hidden',
@@ -86,9 +78,7 @@ const Home = () => {
                                         {
                                             item.images.map((image) => (
                                                 <div>
-                                                    <h3 style={contentStyle}>
-                                                        <img alt="Teste" width="100%" height="100%" src={image} />
-                                                    </h3>
+                                                    <Image onClick={(e) => e.stopPropagation()} src={image} height={500} width={'100%'} />
                                                 </div>
                                             ))
                                         }

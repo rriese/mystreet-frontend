@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Carousel, Empty, Spin, Button, Result, Form, Input, List } from 'antd';
+import { Card, Carousel, Empty, Spin, Button, Result, Form, Input, List, Image } from 'antd';
 import { Comment } from '@ant-design/compatible';
 import { useParams } from 'react-router-dom';
 import ServiceBase from '../../services/serviceBase';
@@ -8,16 +8,9 @@ import { toast } from "react-toastify";
 
 const { TextArea } = Input;
 
-const contentStyle = {
-    height: '500px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    background: '#364d79',
-};
-
 const carouselStyle = {
-    borderRadius: '20px', overflow: 'hidden',
+    borderRadius: '20px',
+    overflow: 'hidden',
     height: '500px',
     background: 'teal',
 }
@@ -197,9 +190,7 @@ const Details = () => {
                                 {
                                     claimData.images.map((image) => (
                                         <div>
-                                            <h3 style={contentStyle}>
-                                                <img alt="Teste" width="100%" height="100%" src={image} />
-                                            </h3>
+                                            <Image src={image} height={500} width={'100%'} />
                                         </div>
                                     ))
                                 }

@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { Card, Spin } from 'antd';
+import { Card, Spin, Col, Row } from 'antd';
 import * as C from './styles'
 import ServiceBase from '../../services/serviceBase';
 
 const buildChart = (chartData) => ({
     chart: {
         type: 'column',
-        width: 560,
+        // width: '',
         height: '100%',
     },
     title: {
@@ -172,23 +172,35 @@ function Charts() {
 
     return (
         <Card title="Gráficos">
-            <C.Div>
-                <Spin spinning={loadingClaimsPerState} size="large">
-                    {claimsPerState && <HighchartsReact highcharts={Highcharts} options={buildChart(claimsPerState)} />}
-                </Spin>
-                <Spin spinning={loadingClaimsPerCity} size="large">
-                    {claimsPerCity && <HighchartsReact highcharts={Highcharts} options={buildChart(claimsPerCity)} />}
-                </Spin>
-                <Spin spinning={loadingClaimsPerStatus} size="large">
-                    {claimsPerStatus && <HighchartsReact highcharts={Highcharts} options={buildChart(claimsPerStatus)} />}
-                </Spin>
-                <Spin spinning={loadingUsersPerProfile} size="large">
-                    {usersPerProfile && <HighchartsReact highcharts={Highcharts} options={buildChart(usersPerProfile)} />}
-                </Spin>
-                <Spin spinning={loadingTopTenUsersClaims} size="large">
-                    {topTenUsersClaims && <HighchartsReact highcharts={Highcharts} options={buildChart(topTenUsersClaims)} />}
-                </Spin>
-            </C.Div>
+            {/* <C.Div> */}
+            <Row gutter={16}>
+                <Col xs={24} xl={6} span={6}>
+                    <Spin spinning={loadingClaimsPerState} size="large">
+                        {claimsPerState && <HighchartsReact highcharts={Highcharts} options={buildChart(claimsPerState)} />}
+                    </Spin>
+                </Col>
+                <Col xs={24} xl={6} span={6}>
+                    <Spin spinning={loadingClaimsPerCity} size="large">
+                        {claimsPerCity && <HighchartsReact highcharts={Highcharts} options={buildChart(claimsPerCity)} />}
+                    </Spin>
+                </Col>
+                <Col xs={24} xl={6} span={6}>
+                    <Spin spinning={loadingClaimsPerStatus} size="large">
+                        {claimsPerStatus && <HighchartsReact highcharts={Highcharts} options={buildChart(claimsPerStatus)} />}
+                    </Spin>
+                </Col>
+                <Col xs={24} xl={6} span={6}>
+                    <Spin spinning={loadingUsersPerProfile} size="large">
+                        {usersPerProfile && <HighchartsReact highcharts={Highcharts} options={buildChart(usersPerProfile)} />}
+                    </Spin>
+                </Col>
+                <Col xs={24} xl={6} span={6}>
+                    <Spin spinning={loadingTopTenUsersClaims} size="large">
+                        {topTenUsersClaims && <HighchartsReact highcharts={Highcharts} options={buildChart(topTenUsersClaims)} />}
+                    </Spin>
+                </Col>
+                {/* </C.Div> */}
+            </Row>
         </Card>
     );
 }
