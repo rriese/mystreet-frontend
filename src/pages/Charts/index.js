@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Card, Spin, Col, Row } from 'antd';
-import * as C from './styles'
 import ServiceBase from '../../services/serviceBase';
 
 const buildChart = (chartData) => ({
@@ -172,7 +171,6 @@ function Charts() {
 
     return (
         <Card title="Gráficos">
-            {/* <C.Div> */}
             <Row gutter={16}>
                 <Col xs={24} xl={6} span={6}>
                     <Spin spinning={loadingClaimsPerState} size="large">
@@ -199,7 +197,6 @@ function Charts() {
                         {topTenUsersClaims && <HighchartsReact highcharts={Highcharts} options={buildChart(topTenUsersClaims)} />}
                     </Spin>
                 </Col>
-                {/* </C.Div> */}
             </Row>
         </Card>
     );
