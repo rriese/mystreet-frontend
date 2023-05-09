@@ -14,6 +14,7 @@ import CityHall from "../pages/CityHall";
 import Details from "../pages/Claim/details";
 import SendEmail from "../pages/ResetPassword/email";
 import ChangePassword from "../pages/ResetPassword/change";
+import Charts from "../pages/Charts";
 
 const Private = ({ Item, Content }) => {
   const { signed } = useAuth();
@@ -40,6 +41,7 @@ const RoutesApp = () => {
           <Route exact path="/admin" element={<AdminAllowed Item={Template} Content={AdminPage} />} />
           <Route exact path="/admin/user" element={<AdminAllowed Item={Template} Content={User} />} />
           <Route exact path="/admin/cityhall" element={<AdminAllowed Item={Template} Content={CityHall} />} />
+          <Route exact path="/admin/charts" element={<AdminAllowed Item={Template} Content={Charts} />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/resetpassword" element={<SendEmail />} />
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />

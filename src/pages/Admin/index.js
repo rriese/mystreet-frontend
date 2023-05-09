@@ -15,7 +15,7 @@ const AdminPage = () => {
                         </Card>
                     </Col>
                     <Col xs={24} xl={6} span={6}>
-                        <Card hoverable title="Gráficos" bordered={false} onClick={() => alert('Not implemented yet!')}>
+                        <Card hoverable title="Gráficos" bordered={false} onClick={() => navigate('/admin/charts')}>
                             Exibe os gráficos gerais do sistema
                         </Card>
                     </Col>
