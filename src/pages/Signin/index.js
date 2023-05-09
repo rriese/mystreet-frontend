@@ -35,7 +35,7 @@ const Signin = () => {
   };
 
   return (
-    <C.Container style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/img/fundo.jpg'})`, backgroundRepeat: "no-repeat", backgroundSize: "100% 100%"}}>
+    <C.Container style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/img/fundo.jpg'})`, backgroundRepeat: "no-repeat", backgroundSize: "100% 100%" }}>
       <Spin spinning={loading} size="large">
         <C.Label>MYSTREET</C.Label>
         <C.Content>
@@ -57,6 +57,12 @@ const Signin = () => {
             Não tem uma conta?
             <C.Strong>
               <Link to="/signup">&nbsp;Registre-se</Link>
+            </C.Strong>
+          </C.LabelSignup>
+          <C.LabelSignup>
+            Esqueceu a senha?
+            <C.Strong>
+              <Link to="/resetpassword">&nbsp;Clique aqui</Link>
             </C.Strong>
           </C.LabelSignup>
         </C.Content>

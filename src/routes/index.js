@@ -12,6 +12,8 @@ import MyClaims from "../pages/Claim/myClaims";
 import Profile from "../pages/User/profile";
 import CityHall from "../pages/CityHall";
 import Details from "../pages/Claim/details";
+import SendEmail from "../pages/ResetPassword/email";
+import ChangePassword from "../pages/ResetPassword/change";
 
 const Private = ({ Item, Content }) => {
   const { signed } = useAuth();
@@ -39,10 +41,12 @@ const RoutesApp = () => {
           <Route exact path="/admin/user" element={<AdminAllowed Item={Template} Content={User} />} />
           <Route exact path="/admin/cityhall" element={<AdminAllowed Item={Template} Content={CityHall} />} />
           <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/resetpassword" element={<SendEmail />} />
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />
           <Route exact path="/myclaims" element={<VisitorAllowed Item={Template} Content={MyClaims} />} />
           <Route exact path="/profile" element={<Private Item={Template} Content={Profile} />} />
           <Route exact path="/claim/:id" element={<Private Item={Template} Content={Details} />} />
+          <Route exact path="/changepassword/:token" element={<ChangePassword />} />
           <Route path="*" element={<Signin />} />
         </Routes>
       </Fragment>

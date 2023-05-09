@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Carousel, Empty, Spin, Button, Result, Form, Input, List } from 'antd';
 import { Comment } from '@ant-design/compatible';
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 import ServiceBase from '../../services/serviceBase';
 import Utils from '../../services/utils';
 import { toast } from "react-toastify";
