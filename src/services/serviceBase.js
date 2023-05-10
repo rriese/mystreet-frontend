@@ -9,6 +9,9 @@ class ServiceBase {
         const userToken = JSON.parse(sessionStorage.getItem("user_token"));
         return userToken && userToken.token ? userToken.token : '';
     }
+    static getBaseUrl() {
+        return BASE_URL;
+    }
     static getRequest = async (resource) => {
         let response;
 

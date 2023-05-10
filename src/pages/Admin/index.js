@@ -20,7 +20,7 @@ const AdminPage = () => {
                         </Card>
                     </Col>
                     <Col xs={24} xl={6} span={6}>
-                        <Card hoverable title="Relatórios" bordered={false} onClick={() => alert('Not implemented yet!')}>
+                        <Card hoverable title="Relatórios" bordered={false} onClick={() => navigate('/admin/reports')}>
                             Exibe as opções de relatórios para geração
                         </Card>
                     </Col>
