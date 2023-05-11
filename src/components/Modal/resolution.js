@@ -2,6 +2,7 @@ import { Modal, Input, Spin } from 'antd';
 import { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import ServiceBase from '../../services/serviceBase';
+import FloatLabel from "../FloatLabel";
 
 const { TextArea } = Input;
 
@@ -68,11 +69,17 @@ const ResolutionModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) =
         <Modal title="Resolução" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Spin spinning={loading} size="large">
                 <Input type="hidden" value={id} />
-                <Input value={claimId} disabled placeholder='Id da reclamação' />
+                <FloatLabel label="Id da reclamação" value={claimId}>
+                    <Input value={claimId} disabled />
+                </FloatLabel>
                 &nbsp;
-                <TextArea rows={4} onChange={(e) => setClaim(e.target.value)} value={claim} placeholder='Reclamação' readOnly />
+                <FloatLabel label="Reclamação" value={claim}>
+                    <TextArea rows={4} onChange={(e) => setClaim(e.target.value)} value={claim} readOnly />
+                </FloatLabel>
                 &nbsp;
-                <TextArea rows={4} onChange={(e) => setResolution(e.target.value)} value={resolution} placeholder='Resolução' />
+                <FloatLabel label="Resolução" value={resolution}>
+                    <TextArea rows={4} onChange={(e) => setResolution(e.target.value)} value={resolution} />
+                </FloatLabel>
             </Spin>
         </Modal>
     )

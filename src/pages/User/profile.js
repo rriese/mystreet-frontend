@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Card, Input, Button, Spin, Tooltip } from 'antd';
+import { Card, Input, Button, Spin } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
+import FloatLabel from "../../components/FloatLabel";
 
 const Profile = () => {
     const [loading, setLoading] = useState(false);
@@ -57,16 +58,16 @@ const Profile = () => {
             <Spin spinning={loading} size="large">
                 <center>
                     <Input type="hidden" value={id}></Input>
-                    <Tooltip title="Nome">
-                        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" style={{ width: '50%' }} /><br /><br />
-                    </Tooltip>
-                    <Tooltip title="Email">
-                        <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" style={{ width: '50%' }} /><br /><br />
-                    </Tooltip>
-                    <Tooltip title="Cpf/Cnpj">
-                        <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} placeholder="Cpf/Cnpj" style={{ width: '50%' }} /><br /><br />
-                    </Tooltip>
-                    <Button type="primary" onClick={() => saveProfile()}>Salvar</Button>
+                    <FloatLabel label="Nome" value={name}>
+                        <Input value={name} onChange={(e) => setName(e.target.value)} /><br /><br />
+                    </FloatLabel>
+                    <FloatLabel label="Email" value={email}>
+                        <Input value={email} onChange={(e) => setEmail(e.target.value)} /><br /><br />
+                    </FloatLabel>
+                    <FloatLabel label="Cpf/Cnpj" value={cpfCnpj}>
+                        <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} /><br /><br />
+                    </FloatLabel>
+                    <Button type="primary" style={{ width: '100%' }} onClick={() => saveProfile()}>Salvar</Button>
                 </center>
             </Spin>
         </Card>

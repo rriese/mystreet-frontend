@@ -3,6 +3,7 @@ import { Modal, Input, Spin, Select, Cascader } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 import Utils from "../../services/utils";
+import FloatLabel from "../FloatLabel";
 
 const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUsers, isCityHall }) => {
     const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
 
             if (dataEdit.id) {
                 let serviceResponse;
-                
+
                 if (isCityHall) {
                     serviceResponse = await ServiceBase.putRequest('api/user/', {
                         id: id,
@@ -108,7 +109,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
             data.push({ value: 'ROLE_VISITOR', label: 'Visitante' });
         }
 
-        return data;        
+        return data;
     }
 
     return (
@@ -117,24 +118,39 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                 <Spin spinning={loading} size="large">
                     &nbsp;
                     <Input type="hidden" value={id} />
-                    <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nome" />
+                    <FloatLabel label="Nome" value={name}>
+                        <Input value={name} onChange={(e) => setName(e.target.value)} />
+                    </FloatLabel>
                     &nbsp;
-                    <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} placeholder="Cpf/Cnpj" />
+                    <FloatLabel label="Cpf/Cnpj" value={cpfCnpj}>
+                        <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} />
+                    </FloatLabel>
                     &nbsp;
-                    <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+                    <FloatLabel label="Email" value={email}>
+                        <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+                    </FloatLabel>
                     &nbsp;
-                    {!showDataOnCreate && <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" />}
+                    {!showDataOnCreate &&
+                        <FloatLabel label="Senha" value={password}>
+                            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </FloatLabel>
+                    }
                     &nbsp;
-                    {isCityHall && <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} placeholder="Estado/Cidade" />}
+                    {isCityHall &&
+                        <FloatLabel label="Estado/Cidade" value={stateAndCity}>
+                            <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} />
+                        </FloatLabel>
+                    }
                     &nbsp;
-                    <Select
-                        style={{ width: '100%' }}
-                        value={userType}
-                        onSelect={(e) => setUserType(e)}
-                        options={getUserTypeOptions(isCityHall)}
-                        placeholder="Tipo de usuário"
-                        disabled={showDataOnCreate}
-                    />
+                    <FloatLabel label="Tipo de usuário" value={userType}>
+                        <Select
+                            style={{ width: '100%' }}
+                            value={userType}
+                            onSelect={(e) => setUserType(e)}
+                            options={getUserTypeOptions(isCityHall)}
+                            disabled={showDataOnCreate}
+                        />
+                    </FloatLabel>
                 </Spin>
             </Modal>
         </>
