@@ -5,6 +5,7 @@ import ServiceBase from "../../services/serviceBase";
 import { useNavigate, useLocation } from "react-router-dom";
 import { UploadOutlined } from '@ant-design/icons';
 import Utils from "../../services/utils";
+import FloatLabel from "../FloatLabel";
 
 const { TextArea } = Input;
 
@@ -68,7 +69,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                     for await (const file of fileList) {
                         const formData = new FormData();
                         formData.append('image', file);
-                        
+
                         await ServiceBase.postRequestUpload(`api/image/${serviceResponse.content.id}/`, formData);
                     }
 
@@ -92,7 +93,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                     for await (const file of fileList) {
                         const formData = new FormData();
                         formData.append('image', file);
-                        
+
                         await ServiceBase.postRequestUpload(`api/image/${serviceResponse.content.id}/`, formData);
                     }
 
@@ -136,20 +137,28 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
             <Spin spinning={loading} size="large">
                 &nbsp;
                 <Input type="hidden" value={id} />
-                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título" />
+                <FloatLabel label="Título" value={title}>
+                    <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+                </FloatLabel>
                 &nbsp;
-                <TextArea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder="Descrição" />
+                <FloatLabel label="Descrição" value={description}>
+                    <TextArea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} />
+                </FloatLabel>
                 &nbsp;
                 <span>
-                    <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} placeholder="Estado/Cidade" />
+                    <FloatLabel label="Estado/Cidade" value={stateAndCity}>
+                        <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} />
+                    </FloatLabel>
                 </span>
                 &nbsp;
-                <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="Bairro" />
+                <FloatLabel label="Bairro" value={district}>
+                    <Input value={district} onChange={(e) => setDistrict(e.target.value)} />
+                </FloatLabel>
                 &nbsp;
                 {
                     images.map((item, i) => (
                         <>
-                        <div><a href="javascript:void(0);" onClick={() =>deleteImage(item)}>Deletar imagem {i + 1}</a></div> 
+                            <div><a href="javascript:void(0);" onClick={() => deleteImage(item)}>Deletar imagem {i + 1}</a></div>
                         </>
                     ))
                 }
