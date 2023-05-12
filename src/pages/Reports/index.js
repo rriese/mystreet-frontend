@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card, Select, Button, Spin } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from '../../services/serviceBase';
+import FloatLabel from '../../components/FloatLabel';
 
 const OPTIONS = ['Usuários cadastrados', 'Reclamações cadastradas'];
 
@@ -42,17 +43,18 @@ function Reports() {
     return (
         <Spin spinning={loading} size="large">
             <Card title="Relatórios">
-                <Select
-                    mode="multiple"
-                    placeholder="Relatórios disponíveis"
-                    value={selectedReports}
-                    onChange={setSelectedReports}
-                    style={{ width: '100%' }}
-                    options={filteredOptions.map((item) => ({
-                        value: item,
-                        label: item,
-                    }))}
-                />
+                <FloatLabel label="Relatórios disponíveis" value={selectedReports}>
+                    <Select
+                        mode="multiple"
+                        value={selectedReports}
+                        onChange={setSelectedReports}
+                        style={{ width: '100%' }}
+                        options={filteredOptions.map((item) => ({
+                            value: item,
+                            label: item,
+                        }))}
+                    />
+                </FloatLabel>
                 &nbsp;
                 <Button style={{ width: '100%' }} type="primary" onClick={handleGenerate}>Gerar relatórios</Button>
             </Card>

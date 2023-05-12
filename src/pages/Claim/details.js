@@ -38,7 +38,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 const Details = () => {
-    let { id } = useParams();
+    const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [loadingComment, setLoadingComment] = useState(false);
     const [submitting, setSubmitting] = useState(false);

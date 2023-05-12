@@ -16,6 +16,7 @@ import SendEmail from "../pages/ResetPassword/email";
 import ChangePassword from "../pages/ResetPassword/change";
 import Charts from "../pages/Charts";
 import Reports from "../pages/Reports";
+import Search from "../pages/Search";
 
 const Private = ({ Item, Content }) => {
   const { signed } = useAuth();
@@ -50,6 +51,7 @@ const RoutesApp = () => {
           <Route exact path="/myclaims" element={<VisitorAllowed Item={Template} Content={MyClaims} />} />
           <Route exact path="/profile" element={<Private Item={Template} Content={Profile} />} />
           <Route exact path="/claim/:id" element={<Private Item={Template} Content={Details} />} />
+          <Route exact path="/search/:term" element={<Private Item={Template} Content={Search} />} />
           <Route exact path="/changepassword/:token" element={<ChangePassword />} />
           <Route path="*" element={<Signin />} />
         </Routes>

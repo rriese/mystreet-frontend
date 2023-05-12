@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 import { UserOutlined, DatabaseOutlined, LogoutOutlined, PlusOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, FloatButton } from 'antd';
+import { Layout, Menu, theme, FloatButton, Input } from 'antd';
 import { useNavigate } from "react-router-dom";
 import useAuth from '../../hooks/useAuth';
 import ClaimModal from '../../components/Modal/claim';
@@ -95,10 +95,13 @@ const Template = ({ content }) => {
           <div className="logo" />
           <Menu theme="dark" mode="horizontal" selectable={false}>
             <Menu.Item onClick={() => navigate('/home')} >
-              <h3 style={{color: 'white'}}>MyStreet</h3>
+              <h3 style={{ color: 'white' }}>MyStreet</h3>
             </Menu.Item>
-            <Menu.Item style={{ marginLeft: 'auto', /*pointerEvents: 'none',*/ color: 'white' }} >
-              {userName && 'Bem vindo(a) ' + userName + '!' }
+
+            <Menu.Item style={{ marginLeft: 'auto', color: 'white' }} >
+              <Input placeholder='Pesquisar' style={{ width: '40%' }} onKeyUp={(e) => { if (e.key === "Enter") navigate("/search/" + e.target.value)}} />
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              {userName && 'Bem vindo(a) ' + userName + '!'}
             </Menu.Item>
           </Menu>
         </Header>

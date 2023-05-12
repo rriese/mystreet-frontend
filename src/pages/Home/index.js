@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Carousel, Empty, Spin, Button, Image } from 'antd';
+import { Card, Carousel, Empty, Spin, Button, Image, Switch } from 'antd';
 import ServiceBase from '../../services/serviceBase';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ const Home = () => {
     const [loading, setLoading] = useState(false);
     const [dataEdit, setDataEdit] = useState([{}]);
     const isCityHall = Utils.isCityHall();
+    const [checked, setChecked] = useState(false);
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -38,8 +39,9 @@ const Home = () => {
     const getClaims = async () => {
         try {
             setLoading(true);
-
-            let res = await ServiceBase.getRequest('api/claim/cityhallclaims');
+            
+            let url = checked ? 'api/claim/myclaims' : 'api/claim/cityhallclaims';
+            let res = await ServiceBase.getRequest(url);
 
             for (let i of res.content) {
                 let images = await ServiceBase.getRequest('api/image/' + i.id);
@@ -64,11 +66,11 @@ const Home = () => {
 
     useEffect(() => {
         getClaims();
-    }, []);
+    }, [checked]);
 
     return (
         <Spin spinning={loading} size="large">
-            <Card title="Reclamações" >
+            <Card title="Reclamações" extra={<Switch onChange={setChecked} checkedChildren="Exibindo minhas" unCheckedChildren="Exibindo todas" />}>
                 {
                     claims.length > 0 ?
                         claims.map((item) => (
@@ -88,7 +90,10 @@ const Home = () => {
                                 }
                                 <br />
                                 <div>
-                                    {item.description}
+                                    <b>Descrição:</b> {item.description}<br />
+                                    <b>Estado:</b> {item.state}<br />
+                                    <b>Cidade:</b> {item.city}<br />
+                                    <b>Bairro:</b> {item.district}<br />
                                 </div>
                                 {isCityHall &&
                                     <span style={{ float: 'right' }}>
