@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const ENV = 'DEV';
+const ENV = 'PRD';
 const BASE_URL = ENV === 'PRD' ? 'https://mystreet-backend.herokuapp.com/' : 'http://localhost:8080/';
 
 class ServiceBase {
