@@ -99,7 +99,7 @@ const Template = ({ content }) => {
             </Menu.Item>
 
             <Menu.Item style={{ marginLeft: 'auto', color: 'white' }} >
-              <Input placeholder='Pesquisar' style={{ width: '40%' }} onKeyUp={(e) => { if (e.key === "Enter") navigate("/search/" + e.target.value)}} />
+              <Input placeholder='Pesquisar' style={{ width: '40%' }} onKeyUp={(e) => { if (e.key === "Enter" && e.target.value) navigate("/search/" + e.target.value)}} />
               &nbsp;&nbsp;&nbsp;&nbsp;
               {userName && 'Bem vindo(a) ' + userName + '!'}
             </Menu.Item>

@@ -29,6 +29,11 @@ const AdminPage = () => {
                             Permite visualizar/cadastrar/editar usuários.
                         </Card>
                     </Col>
+                    <Col xs={24} xl={6} span={6}>
+                        <Card hoverable title="Reclamações" bordered={false} onClick={() => navigate('/admin/claims')}>
+                            Permite visualizar/cadastrar/editar reclamações.
+                        </Card>
+                    </Col>
                 </Row>
             </Card>
         </>
