@@ -76,6 +76,11 @@ const AllClaims = () => {
                             responsive: ['lg']
                         },
                         {
+                            title: 'Responsável',
+                            dataIndex: ['user', 'name'],
+                            responsive: ['lg']
+                        },
+                        {
                             title: 'Status',
                             dataIndex: ['status', 'name'],
                             render: (text, _) => (

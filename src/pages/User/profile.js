@@ -62,10 +62,10 @@ const Profile = () => {
                         <Input value={name} onChange={(e) => setName(e.target.value)} /><br /><br />
                     </FloatLabel>
                     <FloatLabel label="Email" value={email}>
-                        <Input value={email} onChange={(e) => setEmail(e.target.value)} /><br /><br />
+                        <Input value={email} onChange={(e) => setEmail(e.target.value)} disabled /><br /><br />
                     </FloatLabel>
                     <FloatLabel label="Cpf/Cnpj" value={cpfCnpj}>
-                        <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} /><br /><br />
+                        <Input value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} disabled /><br /><br />
                     </FloatLabel>
                     <Button type="primary" style={{ width: '100%' }} onClick={() => saveProfile()}>Salvar</Button>
                 </center>

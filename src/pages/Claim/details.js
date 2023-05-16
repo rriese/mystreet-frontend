@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Carousel, Empty, Spin, Button, Result, Form, Input, List, Image } from 'antd';
+import { Card, /*Carousel,*/ Empty, Spin, Button, Result, Form, Input, List, Image } from 'antd';
 import { Comment } from '@ant-design/compatible';
 import { useParams } from 'react-router-dom';
 import ServiceBase from '../../services/serviceBase';
 import Utils from '../../services/utils';
 import { toast } from "react-toastify";
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const { TextArea } = Input;
-
-const carouselStyle = {
-    borderRadius: '20px',
-    overflow: 'hidden',
-    height: '500px',
-    background: 'teal',
-}
 
 const CommentList = ({ comments }) => (
     <List
@@ -184,13 +179,13 @@ const Details = () => {
         <Spin spinning={loading} size="large">
             {claimData.title ?
                 <Card title={"Detalhes da reclamação"}>
-                    <Card style={{ marginTop: 16 }} type="inner" title={"Teste"} extra={<div><b>Autor: Teste</b></div>}>
+                    <Card style={{ marginTop: 16 }} type="inner" title={claimData.title} extra={<div><b>Autor: {claimData.user.name}</b></div>}>
                         {claimData.images.length > 0 ?
-                            <Carousel style={carouselStyle} autoplay>
+                            <Carousel dynamicHeight={true} showArrows={true} autoPlay infiniteLoop>
                                 {
                                     claimData.images.map((image) => (
                                         <div>
-                                            <Image src={image} height={500} width={'100%'} />
+                                            <Image src={image} />
                                         </div>
                                     ))
                                 }

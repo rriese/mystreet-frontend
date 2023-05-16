@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Carousel, Empty, Spin, Button, Image, Switch } from 'antd';
+import { Card, /*Carousel,*/ Empty, Spin, Button, Image, Switch } from 'antd';
 import ServiceBase from '../../services/serviceBase';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Utils from '../../services/utils';
 import ResolutionModal from '../../components/Modal/resolution';
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const carouselStyle = {
     borderRadius: '20px', overflow: 'hidden',
@@ -76,11 +78,11 @@ const Home = () => {
                         claims.map((item) => (
                             <Card onClick={() => navigate('/claim/' + item.id)} style={{ marginTop: 16, cursor: 'pointer' }} type="inner" title={item.title} extra={<div><b>Autor: {item.user.name}</b></div>}>
                                 {item.images.length > 0 ?
-                                    <Carousel style={carouselStyle} autoplay>
+                                    <Carousel dynamicHeight={true} autoPlay infiniteLoop>
                                         {
                                             item.images.map((image) => (
                                                 <div>
-                                                    <Image onClick={(e) => e.stopPropagation()} src={image} height={500} width={'100%'} />
+                                                    <Image onClick={(e) => e.stopPropagation()} src={image} />
                                                 </div>
                                             ))
                                         }
