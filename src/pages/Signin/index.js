@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { Spin } from 'antd'
 import GoogleAuth2Login from "../../components/OAuth2/login";
-import GoogleAuth2Logout from "../../components/OAuth2/logout";
 
 const Signin = () => {
   const { signin } = useAuth();
