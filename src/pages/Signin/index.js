@@ -5,6 +5,8 @@ import * as C from "./styles";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { Spin } from 'antd'
+import GoogleAuth2Login from "../../components/OAuth2/login";
+import GoogleAuth2Logout from "../../components/OAuth2/logout";
 
 const Signin = () => {
   const { signin } = useAuth();
@@ -65,6 +67,7 @@ const Signin = () => {
               <Link to="/resetpassword">&nbsp;Clique aqui</Link>
             </C.Strong>
           </C.LabelSignup>
+          <GoogleAuth2Login />
         </C.Content>
       </Spin>
     </C.Container>

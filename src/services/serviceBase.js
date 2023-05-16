@@ -99,7 +99,7 @@ class ServiceBase {
 
         return response;
     }
-    static postRequest = async (resource, body) => {
+    static postRequest = async (resource, body, ) => {
         let response;
         let token = ServiceBase.getToken();
         let headers = {};
@@ -120,7 +120,9 @@ class ServiceBase {
             })
             .catch(err => {
                 let errorMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : err.message;
-                this.handleError(errorMessage);
+                if (resource !== 'login') {
+                    this.handleError(errorMessage);
+                }
 
                 response = {
                     responseType: 'ERROR',
