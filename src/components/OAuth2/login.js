@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 const clientId = "148649631751-ffj6dou24et4lrqhhcsgdru06ocrpdqu.apps.googleusercontent.com";
 
-const GoogleAuth2Login = () => {
+const GoogleAuth2Login = ({setLoading}) => {
     const { signin, signup } = useAuth();
     const navigate = useNavigate();
 
     const onSuccess = async (res) => {
+        setLoading(true);
         const notLogged = await signin(res.profileObj.email, res.profileObj.googleId);
 
         if (notLogged) {
@@ -18,11 +19,12 @@ const GoogleAuth2Login = () => {
                 await signin(res.profileObj.email, res.profileObj.googleId);
             }
         }
+        setLoading(false);
         navigate("/home");
     }
 
     const onFailure = (res) => {
-        alert('Falha ao logar com o Google: ' + res)
+        console.error('Falha ao logar com o Google: ' + res.error);
     }
 
     return (

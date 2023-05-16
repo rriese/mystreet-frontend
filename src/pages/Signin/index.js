@@ -18,7 +18,7 @@ const Signin = () => {
 
   const handleLogin = async () => {
     setLoading(true);
-    if (!email | !senha) {
+    if (!email || !senha) {
       setError("Preencha todos os campos");
       setLoading(false);
       return;
@@ -66,7 +66,7 @@ const Signin = () => {
               <Link to="/resetpassword">&nbsp;Clique aqui</Link>
             </C.Strong>
           </C.LabelSignup>
-          <GoogleAuth2Login />
+          <GoogleAuth2Login setLoading={setLoading} />
         </C.Content>
       </Spin>
     </C.Container>
