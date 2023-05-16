@@ -2,8 +2,6 @@ import { GoogleLogin } from 'react-google-login'
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
 
-const clientId = "148649631751-ffj6dou24et4lrqhhcsgdru06ocrpdqu.apps.googleusercontent.com";
-
 const GoogleAuth2Login = () => {
     const { signin, signup } = useAuth();
     const navigate = useNavigate();
