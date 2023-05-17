@@ -19,7 +19,24 @@ const Signup = () => {
 
   const { signup } = useAuth();
 
+  const isValidCpf = () => {
+    let cpfCnpjInternal = cpfCnpj.replace(/\D/g, '');
+    if (cpfCnpjInternal.toString().length != 11 || /^(\d)\1{10}$/.test(cpfCnpjInternal)) return false;
+    var result = true;
+    [9, 10].forEach(function (j) {
+      var soma = 0, r;
+      cpfCnpjInternal.split(/(?=)/).splice(0, j).forEach(function (e, i) {
+        soma += parseInt(e) * ((j + 2) - (i + 1));
+      });
+      r = soma % 11;
+      r = (r < 2) ? 0 : 11 - r;
+      if (r != cpfCnpjInternal.substring(j, j + 1)) result = false;
+    });
+    return result;
+  }
+
   const handleSignup = async () => {
+    setError("");
     setLoading(true);
     if (!name | !email | !emailConf | !password) {
       setError("Preencha todos os campos");
@@ -29,6 +46,19 @@ const Signup = () => {
       setError("Os e-mails não são iguais");
       setLoading(false);
       return;
+    } else {
+      var validEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+      if (!email.match(validEmailRegex)) {
+        setError("E-mail inválido");
+        setLoading(false);
+        return;
+      }
+      if (!isValidCpf()) {
+        setError("Cpf inválido");
+        setLoading(false);
+        return;
+      }
     }
 
     const res = await signup(name, cpfCnpj, email, password);
@@ -45,7 +75,7 @@ const Signup = () => {
   };
 
   return (
-    <C.Container style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/img/fundo.jpg'})`, backgroundRepeat: "no-repeat", backgroundSize: "100% 100%"}}>
+    <C.Container style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/img/fundo.jpg'})`, backgroundRepeat: "no-repeat", backgroundSize: "100% 100%" }}>
       <Spin spinning={loading} size="large">
         <C.Label>MYSTREET</C.Label>
         <C.Content>
