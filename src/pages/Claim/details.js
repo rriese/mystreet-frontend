@@ -144,7 +144,7 @@ const Details = () => {
     }
 
     const saveComment = async () => {
-        if (!comment) return;
+        if (!comment || comment.trim() === '') return;
 
         setSubmitting(true);
 
@@ -181,7 +181,7 @@ const Details = () => {
                 <Card title={"Detalhes da reclamação"}>
                     <Card style={{ marginTop: 16 }} type="inner" title={claimData.title} extra={<div><b>Autor: {claimData.user.name}</b></div>}>
                         {claimData.images.length > 0 ?
-                            <Carousel dynamicHeight={true} showArrows={true} autoPlay infiniteLoop>
+                            <Carousel dynamicHeight={true} showArrows={true}>
                                 {
                                     claimData.images.map((image) => (
                                         <div>
