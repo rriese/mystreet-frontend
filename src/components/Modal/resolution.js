@@ -33,6 +33,7 @@ const ResolutionModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) =
 
                 if (serviceResponse && serviceResponse.responseType === 'OK') {
                     toast.success('Resolução atualizada com sucesso!');
+                    setIsModalOpen(false);
                     getClaims();
                 }
             } else {
@@ -42,10 +43,10 @@ const ResolutionModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) =
 
                 if (serviceResponse && serviceResponse.responseType === 'OK') {
                     toast.success('Resolução cadastrada com sucesso!');
+                    setIsModalOpen(false);
                     getClaims();
                 }
             }
-            setIsModalOpen(false);
         }
         setLoading(false);
     }
