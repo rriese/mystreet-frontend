@@ -18,6 +18,8 @@ import Charts from "../pages/Charts";
 import Reports from "../pages/Reports";
 import Search from "../pages/Search";
 import AllClaims from "../pages/Claim/allclaims";
+import State from "../pages/State";
+import City from "../pages/City";
 
 const Private = ({ Item, Content }) => {
   const { signed } = useAuth();
@@ -47,6 +49,8 @@ const RoutesApp = () => {
           <Route exact path="/admin/charts" element={<AdminAllowed Item={Template} Content={Charts} />} />
           <Route exact path="/admin/reports" element={<AdminAllowed Item={Template} Content={Reports} />} />
           <Route exact path="/admin/claims" element={<AdminAllowed Item={Template} Content={AllClaims} />} />
+          <Route exact path="/admin/states" element={<AdminAllowed Item={Template} Content={State} />} />
+          <Route exact path="/admin/cities" element={<AdminAllowed Item={Template} Content={City} />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/resetpassword" element={<SendEmail />} />
           <Route exact path="/home" element={<Private Item={Template} Content={Home} />} />

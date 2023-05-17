@@ -34,6 +34,16 @@ const AdminPage = () => {
                             Permite visualizar/cadastrar/editar reclamações.
                         </Card>
                     </Col>
+                    <Col xs={24} xl={6} span={6}>
+                        <Card hoverable title="Estados" bordered={false} onClick={() => navigate('/admin/states')}>
+                            Permite visualizar/cadastrar/editar estados.
+                        </Card>
+                    </Col>
+                    <Col xs={24} xl={6} span={6}>
+                        <Card hoverable title="Cidades" bordered={false} onClick={() => navigate('/admin/cities')}>
+                            Permite visualizar/cadastrar/editar cidades.
+                        </Card>
+                    </Col>
                 </Row>
             </Card>
         </>
