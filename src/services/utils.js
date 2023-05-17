@@ -74,6 +74,16 @@ class Utils {
                         label: 'Curitiba'
                     }
                 ],
+            },
+            {
+                value: 'Minas Gerais',
+                label: 'Minas Gerais',
+                children: [
+                    {
+                        value: 'Belo Horizonte',
+                        label: 'Belo Horizonte'
+                    }
+                ],
             }
         ];
     }
