@@ -23,7 +23,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
     const location = useLocation();
 
     const getCities = async () => {
-        let serviceResponse = await Utils.availableStatesAndCitiesDev();
+        let serviceResponse = await Utils.availableStatesAndCities();
         setCities(serviceResponse);
     }
 

@@ -7,7 +7,6 @@ import ServiceBase from '../../services/serviceBase';
 const buildChart = (chartData) => ({
     chart: {
         type: 'column',
-        // width: '',
         height: '100%',
     },
     title: {

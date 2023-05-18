@@ -1,17 +1,8 @@
 import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
-import { Avatar, List, Space, Card, Spin } from 'antd';
+import { List, Space, Card, Spin } from 'antd';
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import ServiceBase from '../../services/serviceBase';
-
-const dataa = [{
-    href: 'https://ant.design',
-    title: `ant design part`,
-    description:
-        'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-}];
 
 const Search = () => {
     const { term } = useParams();

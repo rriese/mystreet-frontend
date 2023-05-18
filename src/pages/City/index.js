@@ -5,7 +5,6 @@ import { FaTrash, FaEdit, FaClock, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
 import CityModal from "../../components/Modal/city";
-// import StateModal from "../../components/Modal/state";
 
 function City() {
     const [loading, setLoading] = useState(false);

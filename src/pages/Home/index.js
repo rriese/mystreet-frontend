@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, /*Carousel,*/ Empty, Spin, Button, Image, Switch } from 'antd';
+import { Card, Empty, Spin, Button, Image, Switch } from 'antd';
 import ServiceBase from '../../services/serviceBase';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";

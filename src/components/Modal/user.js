@@ -27,7 +27,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
     }
 
     const getCities = async () => {
-        let serviceResponse = await Utils.availableStatesAndCitiesDev();
+        let serviceResponse = await Utils.availableStatesAndCities();
         setCities(serviceResponse);
     }
 

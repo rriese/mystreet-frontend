@@ -51,7 +51,7 @@ class Utils {
         return '';
     }
 
-    static availableStatesAndCitiesDev = async () => {
+    static availableStatesAndCities = async () => {
         let serviceResponse = await ServiceBase.getRequest('api/city/');
         let map = new Map();
 
@@ -84,45 +84,6 @@ class Utils {
         }
 
         return result;
-    }
-
-    static availableStatesAndCities = () => {
-        return [
-            {
-                value: 'Santa Catarina',
-                label: 'Santa Catarina',
-                children: [
-                    {
-                        value: 'Jaraguá do Sul',
-                        label: 'Jaraguá do Sul'
-                    },
-                    {
-                        value: 'Joinville',
-                        label: 'Joinville'
-                    },
-                ],
-            },
-            {
-                value: 'Paraná',
-                label: 'Paraná',
-                children: [
-                    {
-                        value: 'Curitiba',
-                        label: 'Curitiba'
-                    }
-                ],
-            },
-            {
-                value: 'Minas Gerais',
-                label: 'Minas Gerais',
-                children: [
-                    {
-                        value: 'Belo Horizonte',
-                        label: 'Belo Horizonte'
-                    }
-                ],
-            }
-        ];
     }
 }
 
