@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Input, Cascader, Spin, Upload, Button } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
@@ -18,8 +18,14 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
     const [loading, setLoading] = useState(false);
     const [stateAndCity, setStateAndCity] = useState((dataEdit && dataEdit.stateAndCity) || []);
     const [images, setImages] = useState((dataEdit && dataEdit.images) || []);
+    const [cities, setCities] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
+
+    const getCities = async () => {
+        let serviceResponse = await Utils.availableStatesAndCitiesDev();
+        setCities(serviceResponse);
+    }
 
     const clearInputFields = () => {
         setTitle("");
@@ -132,6 +138,10 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
         fileList
     }
 
+    useEffect(() => {
+        getCities();
+    }, []);
+
     return (
         <Modal title="Reclamação" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
             <Spin spinning={loading} size="large">
@@ -147,7 +157,7 @@ const ClaimModal = ({ isModalOpen, setIsModalOpen, dataEdit, getClaims }) => {
                 &nbsp;
                 <span>
                     <FloatLabel label="Estado/Cidade" value={stateAndCity}>
-                        <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} />
+                        <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); }} options={cities} style={{ width: '100%' }} />
                     </FloatLabel>
                 </span>
                 &nbsp;

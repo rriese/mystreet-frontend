@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Input, Spin, Select, Cascader } from 'antd';
 import { toast } from "react-toastify";
 import ServiceBase from "../../services/serviceBase";
@@ -15,6 +15,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
     const [stateAndCity, setStateAndCity] = useState((dataEdit && dataEdit.stateAndCity) || []);
     const [userType, setUserType] = useState(dataEdit.userType || (isCityHall ? "ROLE_CITY_HALL" : null) || null);
     const [showDataOnCreate, setShowDataOnCreate] = useState(dataEdit.userType ? true : false);
+    const [cities, setCities] = useState([]);
 
     const clearInputFields = () => {
         setDataEdit([{}]);
@@ -23,6 +24,11 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
         setEmail("");
         setUserType(null);
         setStateAndCity([]);
+    }
+
+    const getCities = async () => {
+        let serviceResponse = await Utils.availableStatesAndCitiesDev();
+        setCities(serviceResponse);
     }
 
     const handleCancel = () => {
@@ -112,6 +118,10 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
         return data;
     }
 
+    useEffect(() => {
+        getCities();
+    }, []);
+
     return (
         <>
             <Modal title="Usuário" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -138,7 +148,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                     &nbsp;
                     {isCityHall &&
                         <FloatLabel label="Estado/Cidade" value={stateAndCity}>
-                            <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} />
+                            <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); }} options={cities} style={{ width: '100%' }} />
                         </FloatLabel>
                     }
                     &nbsp;

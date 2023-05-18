@@ -1,3 +1,5 @@
+import ServiceBase from "./serviceBase";
+
 class Utils {
     static isAdmin = () => {
         const userInfo = sessionStorage.getItem("user_info");
@@ -47,6 +49,41 @@ class Utils {
         }
 
         return '';
+    }
+
+    static availableStatesAndCitiesDev = async () => {
+        let serviceResponse = await ServiceBase.getRequest('api/city/');
+        let map = new Map();
+
+        if (serviceResponse && serviceResponse.responseType === 'OK') {
+            
+            for (let city of serviceResponse.content) {
+                let cities = map.get(city.state.name);
+
+                if (cities) {
+                    cities.push({
+                        value: city.name,
+                        label: city.name
+                    })
+                } else {
+                    map.set(city.state.name, [{
+                        value: city.name,
+                        label: city.name
+                    }])
+                }
+            }
+        }
+
+        let result = [];
+        for (const [key, value] of map) {
+            result.push({
+                value: key,
+                label: key,
+                children: value
+            })
+        }
+
+        return result;
     }
 
     static availableStatesAndCities = () => {
