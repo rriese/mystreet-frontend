@@ -138,7 +138,7 @@ const UserModal = ({ isModalOpen, setIsModalOpen, dataEdit, setDataEdit, getUser
                     &nbsp;
                     {isCityHall &&
                         <FloatLabel label="Estado/Cidade" value={stateAndCity}>
-                            <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); console.log(e) }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} />
+                            <Cascader value={stateAndCity} allowClear={false} onChange={(e) => { setStateAndCity(e); }} options={Utils.availableStatesAndCities()} style={{ width: '100%' }} />
                         </FloatLabel>
                     }
                     &nbsp;
