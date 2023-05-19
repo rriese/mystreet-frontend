@@ -76,7 +76,7 @@ const Home = () => {
                 {
                     claims.length > 0 ?
                         claims.map((item) => (
-                            <Card onClick={() => navigate('/claim/' + item.id)} style={{ marginTop: 16, cursor: 'pointer' }} type="inner" title={item.title} extra={<div><b>Autor: {item.user.name}</b></div>}>
+                            <Card onClick={() => navigate('/claim/' + item.id)} style={{ marginTop: 16, cursor: 'pointer' }} type="inner" title={item.title} extra={<div><b>Autor: {item.user && item.user.name}</b></div>}>
                                 {item.images.length > 0 ?
                                     <Carousel dynamicHeight={true} onClick={(e) => e.stopPropagation()}>
                                         {

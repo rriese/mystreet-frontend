@@ -127,7 +127,7 @@ const Details = () => {
             let result = [];
             for (let comment of serviceResponse.content) {
                 let obj = {
-                    author: comment.user.name,
+                    author: comment.user ? comment.user.name : '-',
                     content: <p>{comment.description}</p>,
                     datetime: new Date(comment.createdAt).toLocaleString()
                 };
@@ -179,7 +179,7 @@ const Details = () => {
         <Spin spinning={loading} size="large">
             {claimData.title ?
                 <Card title={"Detalhes da reclamação"}>
-                    <Card style={{ marginTop: 16 }} type="inner" title={claimData.title} extra={<div><b>Autor: {claimData.user.name}</b></div>}>
+                    <Card style={{ marginTop: 16 }} type="inner" title={claimData.title} extra={<div><b>Autor: {claimData.user && claimData.user.name}</b></div>}>
                         {claimData.images.length > 0 ?
                             <Carousel dynamicHeight={true} showArrows={true}>
                                 {
